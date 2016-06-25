@@ -11,6 +11,11 @@
                 templateUrl: 'live-screen/liveScreen.html',
                 controller: 'liveScreenController',
                 controllerAs: 'vm'
+            })
+            .when('/messages', {
+               templateUrl: 'messages/messages.html',
+                controller: 'messagesController',
+                controllerAs: 'vm'
             });
             //.otherwise({redirectTo: '/'});
 

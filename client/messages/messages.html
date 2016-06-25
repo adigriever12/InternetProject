@@ -1,0 +1,45 @@
+<div>
+    <div id="header">
+        <span>Filter by name:<input ng-model="filterName"></span>
+        <span>Filter by screen:<input ng-model="filterScreen"></span>
+        <span><button>Add new Message</button></span>
+    </div>
+    <ul id="messages-list">
+        <li class="message" ng-repeat="message in vm.messages | filter:{name:filterName} | filter:{frames:filterScreen}">
+            <div>
+                <span>Name: {{message.name}}</span>
+                <button ng-click="vm.edit(message)">Edit</button>
+                <button ng-click="vm.delete(message)">Delete</button>
+            </div>
+            <div>
+                Number of texts: {{message.texts}}
+            </div>
+            <div>
+                Number of pictures: {{message.pictures}}
+            </div>
+            <div>
+                URL template: {{message.url}}
+            </div>
+            <div>
+                Duration: {{message.length}}
+            </div>
+            <span>Screens:</span>
+            <ul>
+                <li ng-repeat="screen in message.frames">{{screen}}</li>
+            </ul>
+
+            <span>Time frames:</span>
+            <ul class="time_frames">
+                <li ng-repeat="frame in message.timeFrame">
+                    <span>From date:{{frame.fromDate | amDateFormat:'DD-MM-YYYY'}}</span>
+                    <span>To date:{{frame.toDate | amDateFormat:'DD-MM-YYYY'}}</span>
+                    <span>From time:{{frame.fromTime}}</span>
+                    <span>To time:{{frame.toTime}}</span>
+                    <span>On days:{{frame.days.toString()}}</span>
+                </li>
+            </ul>
+            <hr/>
+        </li>
+
+    </ul>
+</div>

@@ -1,7 +1,8 @@
-var mongodb = require('mongodb');
-var assert = require('assert');
-var MongoClient = mongodb.MongoClient;
-var url = 'mongodb://localhost:27017/ads';
+var mongodb = require('mongodb'),
+    ObjectID = require('mongodb').ObjectID,
+    assert = require('assert'),
+    MongoClient = mongodb.MongoClient,
+    url = 'mongodb://localhost:27017/ads';
 
 var queryMongo = function (screenId, callback, fromDate, toDate, day, fromTime, toTime) {
 
@@ -38,10 +39,6 @@ var updateMongo = function (newMesseage) {
 
 
 var findFramesForAd = function (db, screenId, fromDate, toDate, day, fromTime, toTime, callback) {
-    //var now = new Date();
-    //var day = weekday[now.getDay()];
-    //var nowTime = now.getHours() + ":" + now.getMinutes();
-
     db.collection('messages').find({
         frames: {$in: screenId},
         timeFrame: {
@@ -59,8 +56,36 @@ var findFramesForAd = function (db, screenId, fromDate, toDate, day, fromTime, t
     });
 };
 
+var getAllMessages = function (callback) {
+    MongoClient.connect(url, function (err, db) {
+
+        assert.equal(null, err);
+
+        db.collection('messages').find({}).toArray(function (err, docs) {
+            assert.equal(err, null);
+            db.close();
+            callback(docs);
+        });
+    });
+};
+
+var deleteMessageById = function (id, callback) {
+    MongoClient.connect(url, function (err, db) {
+
+        assert.equal(null, err);
+        db.collection('messages').deleteOne({"_id": new ObjectID(id)}, function (err, res) {
+            db.close();
+            if (res.deletedCount > 0) {
+                callback(true);
+            } else {
+                callback(false);
+            }
+        });
+    });
+};
+
 var weekday = new Array(7);
-weekday[0]=  "Sunday";
+weekday[0] = "Sunday";
 weekday[1] = "Monday";
 weekday[2] = "Tuesday";
 weekday[3] = "Wednesday";
@@ -71,5 +96,7 @@ weekday[6] = "Saturday";
 module.exports = {
     queryMongo: queryMongo,
     updateMongo: updateMongo,
-    findFramesForAd: findFramesForAd
+    findFramesForAd: findFramesForAd,
+    getAllMessages: getAllMessages,
+    deleteMessageById: deleteMessageById
 };

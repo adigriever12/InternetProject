@@ -1,0 +1,29 @@
+ul#messages-list {
+    list-style-type: none;
+}
+
+div#header span {
+    padding-right: 10px;
+}
+
+div#header input {
+    margin-left: 5px;
+    width: 120px;
+    border: 0.5px grey solid;
+}
+
+div#header {
+    padding: 10px 0;
+}
+
+ul.time_frames li span {
+    padding-right:10px;
+}
+
+ul#messages-list li div{
+    padding: 10px 0;
+}
+
+ul#messages-list li div button {
+    margin-left: 10px;
+}

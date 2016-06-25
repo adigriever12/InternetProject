@@ -31,14 +31,20 @@
     <script src="live-screen/liveScreen.module.js"></script>
     <script src="live-screen/liveScreen.controller.js"></script>
     <script src="live-screen/liveScreen.service.js"></script>
-    <link rel="stylesheet" type="text/css" href="live-screen/liveScreen.css">
+
+
+    <script src="messages/messages.module.js"></script>
+    <script src="messages/messages.controller.js"></script>
+    <script src="messages/messages.service.js"></script>
 
     <link rel="stylesheet" type="text/css" href="admin/admin.css">
+    <link rel="stylesheet" type="text/css" href="live-screen/liveScreen.css">
+    <link rel="stylesheet" type="text/css" href="messages/messages.css">
 </head>
 <body>
 <div style="display: flex;">
     <div admin-view></div>
-    <div style="width: 85%;margin-left: 10px;" ng-view>
+    <div style="width: 85%;padding-left: 10px;background: white;" ng-view>
 
     </div>
 </div>

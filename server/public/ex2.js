@@ -32,18 +32,22 @@
 		$("#result").load( "./" + ad.url);
 
 		// set texts
-		for (var i = 0; i < parseInt(ad.texts); i++) {
-			$("#texts").append('<textarea>hey</textarea>');
+		for (var i = 0; i < ad.texts.length; i++) {
+			$("#texts").append('<textarea>' + ad.texts[i] + '</textarea>');
 		}
 
 		// set pictures
-		for (var i = 0; i < parseInt(ad.pictures); i++) {
-			$("#pics").append('<img src="pic.png" style="height: 50px; width: 50px;">');
+		for (var i = 0; i < ad.pictures.length; i++) {
+			$("#pics").append('<img src="' + ad.pictures[i] +'" style="height: 50px; width: 50px;">');
 		}
 	};
 
 	$(document).ready(function() {
-		var server = io.connect('http://localhost:8080');
+		var server = io.connect('http://localhost:8080', { query: "foo=3" });
+
+		server.on('connected', function(data) {
+			server.emit("getData", {screenId: window.location.pathname.split('=')[1]});
+		});
 
 		// get initial data
 		server.on('screensData', function(data) {
