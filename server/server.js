@@ -5,7 +5,15 @@ var MongoClient = mongodb.MongoClient;
 var url = 'mongodb://localhost:27017/ads';
 var assert = require('assert');
 var sql = require('mssql');
+var cors = require('cors')
+app.use(cors());
+var bodyParser = require('body-parser');
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
 var http = require('http');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
@@ -17,19 +25,9 @@ var listenToConnections = function(screenId,fromDate, toDate,day, fromTime, toTi
 
 		clients.push(client);
 
-		if (!fromDate) {
-			var now = new Date();
-			fromDate = now;
-			toDate = now;
-			day = weekday[now.getDay()];
-			var nowTime = now.getHours() + ":" + now.getMinutes();
-			fromTime = nowTime;
-			toTime = nowTime;
-		}
-
-		queryMongo(screenId,fromDate, toDate,day,fromTime,toTime, function(docs) {
+		queryMongo(screenId, function(docs) {
 			client.emit('screensData', docs);
-		});
+		}, fromDate, toDate,day,fromTime,toTime);
 
 		console.log(client + ' is connected');
 	});
@@ -94,13 +92,23 @@ app.get('/screens', function(request, response) {
 	});
 });
 
-var queryMongo = function(screenId,fromDate, toDate,day, fromTime, toTime, callback) {
+var queryMongo = function(screenId,callback, fromDate, toDate,day, fromTime, toTime) {
 
 	MongoClient.connect(url, function (err, db) {
 
 		assert.equal(null, err);
 
-		findFramesForAd(db, screenId,fromDate, toDate,day, fromTime, toTime, function (docs) {
+        if (!fromDate) {
+            var now = new Date();
+            fromDate = now;
+            toDate = now;
+            day = [weekday[now.getDay()]];
+            var nowTime = now.getHours() + ":" + now.getMinutes();
+            fromTime = nowTime;
+            toTime = nowTime;
+        }
+
+		findFramesForAd(db, [screenId],fromDate, toDate,day, fromTime, toTime, function (docs) {
 			db.close();
 			callback(docs);
 		});
@@ -113,11 +121,11 @@ var findFramesForAd = function(db, screenId, fromDate, toDate,day, fromTime, toT
 	//var nowTime = now.getHours() + ":" + now.getMinutes();
 
 	db.collection('messages').find( {
-		frames: { $in: [screenId] },
+		frames: { $in: screenId },
 		timeFrame: { $elemMatch: {
 			fromDate: {$lt: fromDate},
 			toDate: {$gt: toDate},
-			days: {$in: [day]},
+			days: {$in: day},
 			fromTime: {$lt: fromTime},
 			toTime: {$gt: toTime} }
 		}
@@ -144,8 +152,8 @@ app.get('/TestUpdate', function(request, response) {
 		{
 			"name" : "update",
 			"texts" : "4",
-			"pictures" : "2",
-			"url" : "a.html",
+			"pictures" : "1",
+			"url" : "c.html",
 			"length" : "2",
 			"timeFrame" : [
 				{
@@ -187,15 +195,15 @@ app.get('/screen=:id', function(request, response) {
 	listenToConnections(screenId);
 });
 
-app.get('/getScreens', function(request, response) {
-	var screenIds = request.query.ids.map(function(id) {
+app.post('/getScreens', function(request, response) {
+	var screenIds = request.body.ids.map(function(id) {
         return Number(id);
     });
-	var fromDate = new Date(request.query.fromDate);
-	var toDate = new Date(request.query.toDate);
-	var days = request.query.days;
-	var fromTime = request.query.fromTime;
-	var toTime = request.query.toTime;
+	var fromDate = new Date(request.body.fromDate);
+	var toDate = new Date(request.body.toDate);
+	var days = request.body.days;
+	var fromTime = request.body.fromTime;
+	var toTime = request.body.toTime;
 
     MongoClient.connect(url, function (err, db) {
 

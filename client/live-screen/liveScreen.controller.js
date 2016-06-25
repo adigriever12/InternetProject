@@ -26,6 +26,11 @@
 
         vm.result = "";
         vm.getScreen = function() {
+            if (!vm.selectedDays) {
+                alert('you have to pick at least one day');
+                return;
+            }
+
             var params = {
                 ids: vm.screens,
                 fromDate: vm.from,
@@ -37,7 +42,10 @@
 
             liveScreenService.getScreenId(params).then(function(response) {
                 if (response.length > 0) {
-                    vm.frames = "http://localhost:8080/screen=" +response;
+                    vm.frames = response.map(function(curr) {
+                        return {url: $sce.trustAsResourceUrl("http://localhost:8080/screen=" + curr),
+                                id: curr};
+                    });
 
                     vm.result = response.length + " screens answered the search";
                 } else {

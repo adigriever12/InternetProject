@@ -34,15 +34,13 @@
 
 <div style="padding: 10px 0"></div>
 
-<span>Screen:</span>
-<select>
-    <option ng-repeat="screen in vm.screens">{{screen}}</option>
-</select>
 <div>
-<button ng-click="vm.getScreen()">Get Screen</button>
+<button ng-click="vm.getScreen()">Get Screens</button>
 </div>
 
 <div style="padding: 10px 0"></div>
-<span id="result">{{vm.result}}</span>
-<iframe ng-repeat="frame in vm.frames" ng-src={{frame}}></iframe>
+<div id="result">{{vm.result}}</div>
+<span ng-repeat="frame in vm.frames">screen id:{{frame.id}}
+    <iframe ng-src={{frame.url}}></iframe>
+</span>
 

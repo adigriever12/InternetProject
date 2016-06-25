@@ -16,7 +16,7 @@
         function getScreenId(params) {
             var url = 'http://localhost:8080/getScreens';
 
-            return $http({method: "GET", url: url, params: params}).then(function(response) {
+            return $http({method: "POST", url: url, data: params}).then(function(response) {
 
                 return response.data;
             });
