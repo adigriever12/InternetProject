@@ -3,6 +3,10 @@ ul#panel li.menu_item a:hover {
     cursor: pointer;
 }
 
+ul#panel li.menu_item a.selected {
+    background-color: #6ec6e4;
+}
+
 ul#panel li.menu_item a {
     padding: 13px 10px;
     color: #2c6596;

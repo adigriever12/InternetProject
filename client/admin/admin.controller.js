@@ -16,5 +16,10 @@
             {name: 'Display Live Screen', link: 'displayScreens', img: 'glyphicon glyphicon-blackboard'},
             {name: 'Maps',link: '', img: 'glyphicon glyphicon-map-marker'}
         ];
+
+        // TODO make like selected
+        vm.setChosen = function() {
+            $(this).attr('class', 'selected');
+        };
     }
 }());
