@@ -1,0 +1,11 @@
+
+<div style="width: 15%;height: 100vh;background-color: #3ab2d5;">
+    <ul id="panel">
+        <li class="menu_item" ng-repeat="item in vm.menu">
+            <a ng-href="#/{{item.link}}">
+                <span class="{{item.img}}" style="padding-right: 5px"></span>
+                {{item.name}}
+            </a>
+        </li>
+    </ul>
+</div>
