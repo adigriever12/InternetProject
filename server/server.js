@@ -179,5 +179,14 @@ app.post('/deleteMessageById', function (request, response) {
     });
 });
 
+app.get('/getMessageById', function(request, response) {
+   var id = request.query.id;
+
+    mongo.getMessageById(id, function (res) {
+        response.status(200);
+        response.json(res);
+    });
+});
+
 server.listen(8080);
 console.log('listening on port 8080');

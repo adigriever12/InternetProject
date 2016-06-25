@@ -84,6 +84,18 @@ var deleteMessageById = function (id, callback) {
     });
 };
 
+var getMessageById = function(id, callback) {
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        
+        db.collection('messages').find({"_id": new ObjectID(id)}).toArray(function (err, docs) {
+            assert.equal(err, null);
+            db.close();
+            callback(docs);
+        });
+    });
+};
+
 var weekday = new Array(7);
 weekday[0] = "Sunday";
 weekday[1] = "Monday";
@@ -98,5 +110,6 @@ module.exports = {
     updateMongo: updateMongo,
     findFramesForAd: findFramesForAd,
     getAllMessages: getAllMessages,
-    deleteMessageById: deleteMessageById
+    deleteMessageById: deleteMessageById,
+    getMessageById: getMessageById
 };

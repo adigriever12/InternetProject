@@ -4,8 +4,8 @@
     angular.module('messages')
         .controller('messagesController', messagesController);
 
-    messagesController.$inject = ['messagesService'];
-    function messagesController(messagesService) {
+    messagesController.$inject = ['$location', 'messagesService'];
+    function messagesController($location, messagesService) {
         var vm = this;
 
         messagesService.getAllMessages().then(function(response) {
@@ -27,7 +27,7 @@
         };
 
         vm.edit = function(message) {
-
+            $location.url('/addEdit/' + message._id);
         };
     }
 }());

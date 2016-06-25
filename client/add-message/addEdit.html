@@ -1,0 +1,29 @@
+<div>
+    <div>
+        Name: <input ng-model="vm.message.name">
+    </div>
+    <div>
+        Number of texts: <input ng-repeat="text in vm.message.texts" ng-model="text">
+    </div>
+    <div>
+        Number of pictures: <input ng-repeat="picture in vm.message.pictures" ng-model="picture">
+    </div>
+    <div>
+        URL template: <input ng-model="vm.message.url">
+    </div>
+    <div>
+        Duration: <input ng-model="vm.message.length">
+    </div>
+    <div>Screens: <input ng-repeat="frame in vm.message.frames" ng-model="frame"></div>
+
+    <span>Time frames:</span>
+    <ul class="time_frames">
+        <li ng-repeat="frame in vm.message.timeFrame">
+            <span>From date:<input type="date" ng-model="frame.fromDate" placeholder="frame.fromDate"></span>
+            <span>To date:<input type="date" ng-model="frame.toDate"></span>
+            <span>From time:<input ng-model="frame.fromTime"></span>
+            <span>To time:<input ng-model="frame.toTime"></span></span>
+            <span>On days:<input ng-repeat="day in frame.days" ng-model="day"></span>
+        </li>
+    </ul>
+</div>

@@ -43,7 +43,7 @@
 	};
 
 	$(document).ready(function() {
-		var server = io.connect('http://localhost:8080', { query: "foo=3" });
+		var server = io.connect('http://localhost:8080');
 
 		server.on('connected', function(data) {
 			server.emit("getData", {screenId: window.location.pathname.split('=')[1]});

@@ -23,9 +23,20 @@
             });
         }
 
+        function getMessage(id) {
+            var url = 'http://localhost:8080/getMessageById';
+
+            return $http({method: "GET", url: url, params: {id: id}}).then(function(response) {
+                if (response.data.length = 1) {
+                    return response.data[0];
+                }
+            });
+        }
+
         return {
             'getAllMessages': getAllMessages,
-            'deleteMessage': deleteMessage
+            'deleteMessage': deleteMessage,
+            'getMessage': getMessage
         }
     }
 }());
