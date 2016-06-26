@@ -16,6 +16,16 @@
                templateUrl: 'messages/messages.html',
                 controller: 'messagesController',
                 controllerAs: 'vm'
+            })
+            .when('/addEdit/:message', {
+                templateUrl: 'add-message/addEdit.html',
+                controller: 'addEditController',
+                controllerAs: 'vm'
+            })
+            .when('/addEdit', {
+                templateUrl: 'add-message/addEdit.html',
+                controller: 'addEditController',
+                controllerAs: 'vm'
             });
             //.otherwise({redirectTo: '/'});
 
