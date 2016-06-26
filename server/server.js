@@ -26,12 +26,20 @@ io.on('connection', function(socket) {
     console.log(socket.id + ' is connected');
 
     socket.emit('connected');
-
     socket.on('getData', function(data) {
         mongo.queryMongo(Number(data.screenId), function (docs) {
             socket.emit('screensData', docs);
         });
     });
+	
+	socket.on('disconnect', function () {
+		console.log(socket.id + ' is disconnected');
+		
+		// Delete socket fro, connected clients
+		clients = clients.filter( function(item) {
+			return (item.id != socket.id);
+			});
+  });
 });
 
 var listenToConnections = function (screenId, fromDate, toDate, day, fromTime, toTime) {
@@ -46,7 +54,16 @@ var listenToConnections = function (screenId, fromDate, toDate, day, fromTime, t
         console.log(client.id + ' is connected');
     });
 };
+var updateScreensHistory = function(screenId) {
+	
+	MongoClient.connect(url, function (err, db) {
 
+	assert.equal(null, err);
+
+	db.collection('screensHistory').insert({id:screenId, date:new Date()});
+	db.close();
+	});
+};
 app.get(/\.js|\.html|\.png/, function (request, response) {
     response.sendFile(__dirname + request.url);
 });
@@ -54,9 +71,10 @@ app.get(/\.js|\.html|\.png/, function (request, response) {
 app.get('/screen=:id', function (request, response) {
     response.sendFile(__dirname + "/public/index.html");
 
-    /*var screenId = Number(request.params.id);
-
-    mongo.queryMongo(screenId, function (docs) {
+    var screenId = Number(request.params.id);
+	updateScreensHistory(screenId);
+	
+    /*mongo.queryMongo(screenId, function (docs) {
         client.emit('screensData', docs);
     });
 
