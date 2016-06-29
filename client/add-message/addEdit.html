@@ -1,29 +1,31 @@
-<div>
+<form name="editAdd">
     <div>
-        Name: <input ng-model="vm.message.name">
+        Name: <input ng-model="vm.message.name" required>
     </div>
     <div>
-        Number of texts: <input ng-repeat="text in vm.message.texts" ng-model="text">
+        Number of texts: <input ng-repeat="text in vm.message.texts" ng-model="text" required>
     </div>
     <div>
-        Number of pictures: <input ng-repeat="picture in vm.message.pictures" ng-model="picture">
+        Number of pictures: <input ng-repeat="picture in vm.message.pictures" ng-model="picture" required>
     </div>
     <div>
-        URL template: <input ng-model="vm.message.url">
+        URL template: <input ng-model="vm.message.url" required>
     </div>
     <div>
-        Duration: <input ng-model="vm.message.length">
+        Duration: <input ng-model="vm.message.length" required>
     </div>
-    <div>Screens: <input ng-repeat="frame in vm.message.frames" ng-model="frame"></div>
+    <div>Screens: <input ng-repeat="frame in vm.message.frames" ng-model="frame" required></div>
 
     <span>Time frames:</span>
     <ul class="time_frames">
         <li ng-repeat="frame in vm.message.timeFrame">
-            <span>From date:<input type="date" ng-model="frame.fromDate" placeholder="frame.fromDate"></span>
-            <span>To date:<input type="date" ng-model="frame.toDate"></span>
-            <span>From time:<input ng-model="frame.fromTime"></span>
-            <span>To time:<input ng-model="frame.toTime"></span></span>
-            <span>On days:<input ng-repeat="day in frame.days" ng-model="day"></span>
+            <span>From date:<input type="date" ng-model="frame.fromDate" placeholder="frame.fromDate" required></span>
+            <span>To date:<input type="date" ng-model="frame.toDate" required></span>
+            <span>From time:<input ng-model="frame.fromTime" required></span>
+            <span>To time:<input ng-model="frame.toTime" required></span></span>
+            <span>On days:<input ng-repeat="day in frame.days" ng-model="day" required></span>
         </li>
     </ul>
-</div>
+    <div><button type="submit" ng-click="vm.save()">Save</button></div>
+</form>
+
