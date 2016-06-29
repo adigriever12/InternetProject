@@ -15,7 +15,7 @@
             {name: 'New Messages', link: 'addEdit', img: 'glyphicon glyphicon-plus'},
             {name: 'Manage Data', link: '', img: 'glyphicon glyphicon-pencil'},
             {name: 'Display Live Screen', link: 'displayScreens', img: 'glyphicon glyphicon-blackboard'},
-            {name: 'Maps',link: '', img: 'glyphicon glyphicon-map-marker'}
+            {name: 'Maps',link: 'maps', img: 'glyphicon glyphicon-map-marker'}
         ];
 
         // TODO make like selected

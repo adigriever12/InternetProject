@@ -26,7 +26,13 @@
                 templateUrl: 'add-message/addEdit.html',
                 controller: 'addEditController',
                 controllerAs: 'vm'
+            })
+            .when('/maps', {
+                templateUrl: 'maps/maps.html',
+                controller: 'mapsController',
+                controllerAs: 'vm'
             });
+        
             //.otherwise({redirectTo: '/'});
 
         $mdDateLocaleProvider.formatDate = function(date) {

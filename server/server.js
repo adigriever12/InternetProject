@@ -22,11 +22,13 @@ app.use("/", express.static(path.join(__dirname, 'public')));
 var clients = [];
 
 io.on('connection', function(socket) {
-    clients.push(socket);
-    console.log(socket.id + ' is connected');
+
+
 
     socket.emit('connected');
     socket.on('getData', function(data) {
+        clients.push({socket:socket, location:data.location, screenId:data.screenId});
+        console.log(socket.id + ' is connected');
         mongo.queryMongo(Number(data.screenId), function (docs) {
             socket.emit('screensData', docs);
         });
@@ -35,9 +37,9 @@ io.on('connection', function(socket) {
 	socket.on('disconnect', function () {
 		console.log(socket.id + ' is disconnected');
 		
-		// Delete socket fro, connected clients
+		// Delete socket from connected clients
 		clients = clients.filter( function(item) {
-			return (item.id != socket.id);
+			return (item.socket.id != socket.id);
 			});
   });
 });
@@ -204,6 +206,18 @@ app.get('/getMessageById', function(request, response) {
         response.status(200);
         response.json(res);
     });
+});
+
+app.get('/getLocations', function (request, response) {
+
+    var res = [];
+
+    for(i in clients) {
+        res.push({screenId: clients[i].screenId, location: clients[i].location});
+    }
+
+    response.status(200);
+    response.json(res);
 });
 
 server.listen(8080);
