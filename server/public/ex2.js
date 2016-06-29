@@ -46,7 +46,14 @@
 		var server = io.connect('http://localhost:8080');
 
 		server.on('connected', function(data) {
-			server.emit("getData", {screenId: window.location.pathname.split('=')[1]});
+			GMaps.geolocate({
+				success: function (position) {
+					server.emit("getData", {
+						screenId: window.location.pathname.split('=')[1],
+						location: {lat: position.coords.latitude, lng: position.coords.longitude}
+					});
+				}
+			});
 		});
 
 		// get initial data
