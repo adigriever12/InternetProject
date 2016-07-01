@@ -36,6 +36,9 @@
                 templateUrl: 'dashboard/dashboard.html',
                 controller: 'dashboardController',
                 controllerAs: 'vm'
+            })
+            .when('/about', {
+                templateUrl: 'about/about.html'
             });
 
             //.otherwise({redirectTo: '/'});
