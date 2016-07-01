@@ -96,6 +96,29 @@ var getMessageById = function(id, callback) {
     });
 };
 
+var updateHistory = function(screenId, location, callback) {
+
+    MongoClient.connect(url, function (err, db) {
+
+        assert.equal(null, err);
+
+        db.collection('screensHistory').insert({id:screenId, date:new Date(), location:location});
+        db.close();
+        callback(true);
+    });
+};
+var getLocations  = function(callback) {
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+
+        db.collection('screensHistory').find().toArray(function (err, docs) {
+            assert.equal(err, null);
+            db.close();
+            callback(docs);
+        });
+    });
+};
+
 var weekday = new Array(7);
 weekday[0] = "Sunday";
 weekday[1] = "Monday";
@@ -111,5 +134,7 @@ module.exports = {
     findFramesForAd: findFramesForAd,
     getAllMessages: getAllMessages,
     deleteMessageById: deleteMessageById,
-    getMessageById: getMessageById
+    getMessageById: getMessageById,
+    updateHistory: updateHistory,
+    getLocations: getLocations
 };

@@ -20,7 +20,7 @@
             var mapElement = document.getElementById('map');
 
             var mapOptions = {
-                zoom: 15,
+                zoom: 10,
                 disableDefaultUI: true
             };
 
@@ -35,7 +35,7 @@
                     var marker = new google.maps.Marker({
                         map: map,
                         position: initialLocation,
-                        title: 'מיקום נוכחי',
+                        title: 'My location',
                         zIndex: google.maps.Marker.MAX_ZINDEX + 1
                     });
 
@@ -52,14 +52,14 @@
             for (var i = 0; i < vm.locations.length; i++) {
                 var myLatLng = {};
 
-                myLatLng.lat = parseFloat(vm.locations[i].location.lat + 20 * i);
-                myLatLng.lng = parseFloat(vm.locations[i].location.lng + 20 * i);
+                myLatLng.lat = parseFloat(vm.locations[i].location.lat);
+                myLatLng.lng = parseFloat(vm.locations[i].location.lng);
 
                 var marker = new google.maps.Marker({
-                    id: vm.locations[i].screenId,
+                    id: vm.locations[i].id,
                     map: map,
                     position: myLatLng,
-                    title: vm.locations[i].screenId
+                    title: "Screen " + vm.locations[i].id
                 });
 
             }
