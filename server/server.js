@@ -24,7 +24,6 @@ var clients = [];
 io.on('connection', function(socket) {
 
 
-
     socket.emit('connected');
     socket.on('getData', function(data) {
         clients.push({socket:socket, location:data.location, screenId:data.screenId});
@@ -116,6 +115,16 @@ app.get('/TestUpdate', function (request, response) {
 
     response.status(200);
     response.json("updated successfully");
+
+});
+
+app.post('/updateMessage', function (request, response) {
+    var message = request.body.message;
+
+    mongo.updateMessage(message, function(result) {
+        response.status(200);
+        response.json(result);
+    });
 
 });
 
@@ -221,10 +230,16 @@ app.get('/getLocations', function (request, response) {
 
 });
 app.get('/getConnectedScreens', function (request, response) {
-
     response.status(200);
     response.json(clients.length);
-
 });
+
+app.get('/getAllUrlTemplates', function (request, response) {
+    mongo.getAllURls(function (res) {
+        response.status(200);
+        response.json(res);
+    });
+});
+
 server.listen(8080);
 console.log('listening on port 8080');

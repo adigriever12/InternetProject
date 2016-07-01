@@ -19,11 +19,11 @@
 
 <div style="padding: 10px 0"></div>
 
-<md-input-container>
+<md-input-container id="adi">
     <label>Days</label>
     <md-select ng-model="vm.selectedDays"
                md-on-close="vm.clearSearchTerm()"
-               data-md-container-class="daysselection"
+               data-md-container-class="mdselection"
                multiple>
         <md-optgroup label="Pick days">
             <md-option ng-value="day" ng-repeat="day in vm.days |

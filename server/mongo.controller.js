@@ -107,7 +107,7 @@ var updateHistory = function(screenId, location, callback) {
         callback(true);
     });
 };
-var getLocations  = function(callback) {
+var getLocations = function(callback) {
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
 
@@ -115,6 +115,42 @@ var getLocations  = function(callback) {
             assert.equal(err, null);
             db.close();
             callback(docs);
+        });
+    });
+};
+
+var getAllURls = function(callback) {
+    MongoClient.connect(url, function (err, db) {
+
+        assert.equal(null, err);
+
+        db.collection('messages').find({}, {url: 1, _id:0 }).toArray(function (err, docs) {
+            assert.equal(err, null);
+            db.close();
+
+            var urls = [];
+            docs.forEach(function(curr) {
+               if (urls.indexOf(curr.url) == -1) {
+                   urls.push(curr.url);
+               }
+            });
+            callback(urls);
+        });
+    });
+};
+
+var updateMessage = function(message, callback) {
+    MongoClient.connect(url, function (err, db) {
+
+        assert.equal(null, err);
+
+        db.collection('messages').update({_id: new ObjectID(message.id)}, message, function (err, docs) {
+            if (err || docs.result.nModified != 1) {
+                callback(false);
+            }
+            db.close();
+
+            callback(true);
         });
     });
 };
@@ -136,5 +172,7 @@ module.exports = {
     deleteMessageById: deleteMessageById,
     getMessageById: getMessageById,
     updateHistory: updateHistory,
-    getLocations: getLocations
+    getLocations: getLocations,
+    getAllURls: getAllURls,
+    updateMessage: updateMessage
 };

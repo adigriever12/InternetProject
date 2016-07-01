@@ -1,0 +1,97 @@
+.error {
+    color: red;
+}
+
+.field {
+    padding: 10px 0;
+}
+
+form#editAddForm div input,textarea {
+    border: 1px rgba(128, 128, 128, 0.4) solid;
+}
+
+ul.time_frames li span input {
+    border: 1px rgba(128, 128, 128, 0.4) solid;
+}
+
+ul.time_frames li {
+    margin-bottom: 20px;
+}
+
+ul.time_frames li div{
+    margin: 5px 0;
+}
+
+ul.time_frames li div input{
+    width: 143px;
+}
+
+button#submit[disabled] {
+    color: grey;
+}
+
+button.remove {
+    border-radius: 50%;
+    border: 1px #8c4c4c solid;
+    background-color: rgba(253, 0, 0, 0.58);
+    margin-left: 8px;
+    color: white;
+}
+
+button.remove:focus {
+    outline: none;
+}
+
+button.remove[disabled] {
+    border: 1px #7b5252 solid;
+    background-color: rgba(95, 0, 0, 0.58);
+    color: #c7c7c7;
+}
+
+button.add {
+    border-radius: 50%;
+    border: 1px #378c57 solid;
+    background-color: rgba(21, 181, 59, 0.58);
+    margin-left: 8px;
+    color: white;
+    height: 24px;
+    width: 24px;
+    font-size: 17px;
+}
+
+button.add[disabled] {
+    border: 1px #416b51 solid;
+    background-color: rgba(28, 70, 38, 0.58);
+}
+
+button.add:focus {
+    outline: none;
+}
+
+.multiple-items {
+    display: flex;
+    align-items: center;
+}
+
+.picture {
+    height: 100px;
+    width: 150px;
+}
+
+.multiple-items input[type=file] {
+    display: inline;
+}
+
+.text_form {
+    display: flex;
+    align-items: center;
+}
+
+.field .add_fields {
+    margin: 5px 0 10px 0;
+}
+
+.field_names {
+    margin-right: 10px;
+    font-weight: bold;
+}

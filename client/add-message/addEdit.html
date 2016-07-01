@@ -1,31 +1,131 @@
-<form name="editAdd">
-    <div>
-        Name: <input ng-model="vm.message.name" required>
+<form novalidate name="editAdd" id="editAddForm">
+    <div class="field">
+        <span class="field_names">Name:</span><input name="name" ng-model="vm.message.name" required>
+        <span ng-if="!editAdd.name.$valid" class="error" ng-cloak>message must have a name</span>
     </div>
-    <div>
-        Texts: <input ng-repeat="text in vm.message.texts" ng-model="text" required>
-    </div>
-    <div>
-        Pictures: <input ng-repeat="picture in vm.message.pictures" ng-model="picture" required>
-    </div>
-    <div>
-        URL template: <input ng-model="vm.message.url" required>
-    </div>
-    <div>
-        Duration: <input ng-model="vm.message.length" required>
-    </div>
-    <div>Screens: <input ng-repeat="frame in vm.message.frames" ng-model="frame" required></div>
 
-    <span>Time frames:</span>
-    <ul class="time_frames">
-        <li ng-repeat="frame in vm.message.timeFrame">
-            <span>From date:<input type="date" ng-model="frame.fromDate" placeholder="frame.fromDate" required></span>
-            <span>To date:<input type="date" ng-model="frame.toDate" required></span>
-            <span>From time:<input ng-model="frame.fromTime" required></span>
-            <span>To time:<input ng-model="frame.toTime" required></span></span>
-            <span>On days:<input ng-repeat="day in frame.days" ng-model="day" required></span>
-        </li>
-    </ul>
-    <div><button type="submit" ng-click="vm.save()">Save</button></div>
+    <div class="field">
+        <div class="add_fields">
+            <span class="field_names">Texts:</span>
+            <button class="add" ng-click="vm.add(vm.message.texts)" ng-disabled="vm.message.texts.length >= 10">+</button>
+        </div>
+        <div ng-repeat="text in vm.message.texts track by $index" class="multiple-items">
+
+            <ng-form name="innerTextForm" class="text_form">
+
+                <textarea name="text_name" ng-model="text.value"
+                          placeholder="{{text.value == '' ? 'type text here...' : ''}}"
+                          ng-required="vm.message.texts.length <= 1 || vm.message.texts.length >= 10"></textarea>
+                <span><button class="remove" ng-click="vm.delete(text, vm.message.texts)" ng-disabled="vm.message.texts.length <= 1">X</button></span>
+                <span ng-if="innerTextForm.text_name.$error.required" ng-cloak>at least one text field, and maximum of 10</span>
+            </ng-form>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="add_fields">
+            <span class="field_names">Pictures:</span><button class="add" ng-click="vm.add(vm.message.pictures)" ng-disabled="vm.message.pictures.length >= 5">+</button>
+            <span ng-if="vm.message.pictures.length >= 5" ng-cloak>maximum of 5 pictures</span>
+        </div>
+
+        <div ng-repeat="picture in vm.message.pictures track by $index" class="multiple-items">
+            <!--<ng-form name="innerPictureForm">-->
+
+            <img ng-cloak class="picture" ng-show="picture.value && picture.value != ''" ng-src="http://localhost:8080/{{picture.value}}">
+            <input ng-required="vm.message.texts.length <= 1 || vm.message.texts.length >= 10" name="picture_name" ng-if="!picture.value || picture.value == ''" type="file" ng-model="picture.value">
+
+            <button class="remove" ng-click="vm.delete(picture, vm.message.pictures)">X</button>
+                    <!--<span>{{innerPictureForm.picture_name.$valid}}</span>-->
+
+
+            <!--</ng-form>-->
+
+        </div>
+    </div>
+
+    <div class="field">
+        <span class="field_names">URL template:</span>
+        <md-input-container>
+            <label style="display: none">url</label>
+            <md-select ng-model="vm.message.url" name="url_name"
+                       data-md-container-class="mdselection" required>
+                <md-select-header class="select-header">
+                    choose url template
+                </md-select-header>
+                <md-optgroup label="Pick template">
+                    <md-option ng-selected="url == vm.selectedUrl" ng-value="url" ng-repeat="url in vm.allURLs">{{url}}</md-option>
+                </md-optgroup>
+            </md-select>
+        </md-input-container>
+        <span class="error" ng-cloak>{{vm.message.url ? '' : 'message must have a template'}}</span>
+    </div>
+
+    <div class="field">
+        <span class="field_names">Duration (in milliseconds):</span><input name="length" min="1" type="number" ng-model="vm.message.length" required>
+        <span class="error" ng-show="editAdd.length.$error.required" ng-cloak>Required!</span>
+        <span class="error" ng-show="editAdd.length.$error.number" ng-cloak>Not valid number!</span>
+    </div>
+
+    <div class="field">
+        <span class="field_names">Screens:</span>
+        <md-input-container>
+            <label style="display: none">screens</label>
+            <md-select ng-model="vm.message.frames" required name="screensSelect"
+                       data-md-container-class="mdselection" multiple>
+                <md-select-header class="select-header">
+                    choose screens
+                </md-select-header>
+                <md-optgroup label="Pick screens ids">
+                    <md-option ng-value="screen" ng-repeat="screen in vm.allScreens">{{screen}}
+                    </md-option>
+                </md-optgroup>
+            </md-select>
+        </md-input-container>
+        <span class="error" ng-cloak ng-show="editAdd.screensSelect.$error.required">must have at least one screen</span>
+    </div>
+
+    <div class="field">
+        <span class="field_names">Time frames:</span>
+        <ul class="time_frames">
+            <li ng-repeat="frame in vm.message.timeFrame">
+                <div>
+                    <span>From date:</span><input type="date" ng-model="frame.fromDate" placeholder="frame.fromDate" required>
+                    <span>To date:</span><input type="date" ng-model="frame.toDate" required>
+                    <span class="error" ng-show="!frame.fromDate || !frame.toDate">must fill message dates of screening</span>
+                </div>
+                <div>
+                    <span>From time:</span><input type="time" ng-model="frame.fromTime" required>
+                    <span>To time:</span><input type="time" ng-model="frame.toTime" required>
+                    <span class="error" ng-show="!frame.fromTime || !frame.toTime">must fill message hours of screening</span>
+                </div>
+
+                <div>
+                    <span>Days:</span>
+                    <md-input-container>
+                        <label style="display: none">Days</label>
+                        <md-select required ng-model="frame.days" name="daysSelect"
+                                   data-md-container-class="mdselection"
+                                   multiple>
+                            <md-select-header class="select-header">
+                                choose days
+                            </md-select-header>
+                            <md-optgroup>
+                                <md-option ng-value="day" ng-repeat="day in vm.allDays">{{day}}</md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                    <span class="error" ng-cloak ng-show="editAdd.daysSelect.$error.required">must have at least one day</span>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <button id="submit" type="submit" ng-click="vm.save()" ng-disabled="editAdd.$invalid">
+            Save
+        </button>
+        <span ng-if="editAdd.$invalid" class="error" ng-cloak>fix inputs according to error messages</span>
+    </div>
 </form>
 

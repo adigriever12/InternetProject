@@ -32,11 +32,20 @@
                 }
             });
         }
+        
+        function getAllURls() {
+            var url = 'http://localhost:8080/getAllUrlTemplates';
+
+            return $http.get(url).then(function(response) {
+                return response.data;
+            });
+        }
 
         return {
             'getAllMessages': getAllMessages,
             'deleteMessage': deleteMessage,
-            'getMessage': getMessage
+            'getMessage': getMessage,
+            getAllURls: getAllURls
         }
     }
 }());
