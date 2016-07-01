@@ -31,8 +31,13 @@
                 templateUrl: 'maps/maps.html',
                 controller: 'mapsController',
                 controllerAs: 'vm'
+            })
+            .when('/dashboard', {
+                templateUrl: 'dashboard/dashboard.html',
+                controller: 'dashboardController',
+                controllerAs: 'vm'
             });
-        
+
             //.otherwise({redirectTo: '/'});
 
         $mdDateLocaleProvider.formatDate = function(date) {

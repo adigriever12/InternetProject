@@ -10,7 +10,7 @@
         var vm = this;
 
         vm.menu = [
-            {name: 'Dashboard', link: '', img: 'glyphicon glyphicon-stats'},
+            {name: 'Dashboard', link: 'dashboard', img: 'glyphicon glyphicon-stats'},
             {name: 'View Messages', link: 'message', img: 'glyphicon glyphicon-eye-open'},
             {name: 'New Messages', link: 'addEdit', img: 'glyphicon glyphicon-plus'},
             {name: 'Manage Data', link: '', img: 'glyphicon glyphicon-pencil'},

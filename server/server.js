@@ -28,6 +28,7 @@ io.on('connection', function(socket) {
     socket.emit('connected');
     socket.on('getData', function(data) {
         clients.push({socket:socket, location:data.location, screenId:data.screenId});
+        updateScreensHistory(data.screenId, data.location);
         console.log(socket.id + ' is connected');
         mongo.queryMongo(Number(data.screenId), function (docs) {
             socket.emit('screensData', docs);
@@ -56,16 +57,11 @@ var listenToConnections = function (screenId, fromDate, toDate, day, fromTime, t
         console.log(client.id + ' is connected');
     });
 };
-var updateScreensHistory = function(screenId) {
-	
-	MongoClient.connect(url, function (err, db) {
-
-	assert.equal(null, err);
-
-	db.collection('screensHistory').insert({id:screenId, date:new Date()});
-	db.close();
-	});
-};
+var updateScreensHistory = function(screenId, location) {
+	mongo.updateHistory(screenId, location, function (docs) {
+        console.log('history updated');
+    });
+    };
 app.get(/\.js|\.html|\.png/, function (request, response) {
     response.sendFile(__dirname + request.url);
 });
@@ -74,7 +70,7 @@ app.get('/screen=:id', function (request, response) {
     response.sendFile(__dirname + "/public/index.html");
 
     var screenId = Number(request.params.id);
-	updateScreensHistory(screenId);
+	//updateScreensHistory(screenId);
 	
     /*mongo.queryMongo(screenId, function (docs) {
         client.emit('screensData', docs);
@@ -210,15 +206,25 @@ app.get('/getMessageById', function(request, response) {
 
 app.get('/getLocations', function (request, response) {
 
+    mongo.getLocations(function(res) {
+        response.status(200);
+        response.json(res);
+    });
+
+    /*
     var res = [];
 
     for(i in clients) {
         res.push({screenId: clients[i].screenId, location: clients[i].location});
     }
+*/
+
+});
+app.get('/getConnectedScreens', function (request, response) {
 
     response.status(200);
-    response.json(res);
-});
+    response.json(clients.length);
 
+});
 server.listen(8080);
 console.log('listening on port 8080');
