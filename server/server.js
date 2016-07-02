@@ -118,31 +118,19 @@ app.get('/TestUpdate', function (request, response) {
 
 });
 
-app.post('/updateMessage', function (request, response) {
-    var message = request.body.message;
-
-    mongo.updateMessage(message, function(result) {
-        response.status(200);
-        response.json(result);
-    });
-
-});
-
 app.post('/getScreensIdsByConditions', function (request, response) {
     var screenIds = request.body.ids.map(function (id) {
         return Number(id);
     });
-    var fromDate = request.body.fromDate;
-    var toDate = request.body.toDate;
+    var date = new Date(request.body.date);
     var days = request.body.days;
-    var fromTime = request.body.fromTime;
-    var toTime = request.body.toTime;
+    var time = request.body.time;
 
     MongoClient.connect(url, function (err, db) {
 
         assert.equal(null, err);
 
-        mongo.findFramesForAd(db, screenIds, fromDate, toDate, days, fromTime, toTime, function (docs) {
+        mongo.findFramesForAd(db, screenIds, date, date, days, time, time, function (docs) {
             db.close();
 
             var frames = [];
@@ -231,6 +219,22 @@ app.get('/getAllUrlTemplates', function (request, response) {
         response.status(200);
         response.json(res);
     });
+});
+
+app.post('/updateMessage', function (request, response) {
+    var message = request.body.message;
+
+    // fix dates from string to date objects
+    message.timeFrame.forEach(function(curr, index) {
+        message.timeFrame[index].fromDate = new Date(message.timeFrame[index].fromDate);
+        message.timeFrame[index].toDate = new Date(message.timeFrame[index].toDate);
+    });
+
+    mongo.updateMessage(message, function(result) {
+        response.status(200);
+        response.json(result);
+    });
+
 });
 
 app.post('/insertNewMessage', function (request, response) {

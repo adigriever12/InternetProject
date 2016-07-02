@@ -8,11 +8,9 @@
     function liveScreenController(liveScreenService, $sce) {
         var vm = this;
 
-        vm.from = new Date();
-        vm.to = new Date();
-
-        vm.fromTime = "09:00";
-        vm.toTime = "09:00";
+        var now = new Date();
+        vm.date = now;
+        vm.time = now.getHours() + ":" + now.getMinutes();
 
         vm.days = ['Sunday' ,'Monday' ,'Tuesday' ,'Wednesday' ,'Thursday', 'Friday', 'Saturday'];
         vm.selectedDays;
@@ -33,11 +31,9 @@
 
             var params = {
                 ids: vm.screens,
-                fromDate: vm.from,
-                toDate: vm.to,
+                date: vm.date,
                 days: vm.selectedDays,
-                fromTime: vm.fromTime,
-                toTime: vm.toTime
+                time: vm.time
             };
 
             liveScreenService.getScreenId(params).then(function(response) {

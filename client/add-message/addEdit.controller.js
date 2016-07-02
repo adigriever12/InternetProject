@@ -22,7 +22,8 @@
                 });
                 //vm.message.url = response.url;//vm.selectedUrl
                 vm.selectedUrl = response.url;
-                vm.message.length = parseInt(response.length, 10);
+                vm.message.length = response.length;
+                vm.message.price = response.price;
                 vm.message.frames = response.frames;
                 vm.message.timeFrame = [];//response.timeFrame;
 
@@ -91,8 +92,8 @@
                 var toTime = vm.message.timeFrame[index].toTime;
                 requestMessage.timeFrame[index].toTime = ("0" + toTime.getHours()).slice(-2) + ":" + ("0" + toTime.getMinutes()).slice(-2);
 
-                requestMessage.timeFrame[index].fromDate = requestMessage.timeFrame[index].fromDate.toISOString();
-                requestMessage.timeFrame[index].toDate = requestMessage.timeFrame[index].toDate.toISOString();
+                //requestMessage.timeFrame[index].fromDate = requestMessage.timeFrame[index].fromDate.toISOString();
+                //requestMessage.timeFrame[index].toDate = requestMessage.timeFrame[index].toDate.toISOString();
             });
 
             requestMessage.pictures = requestMessage.pictures.map(function (curr) {
