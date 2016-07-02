@@ -1,19 +1,13 @@
 <md-content>
     <div>Date:</div>
-    <md-datepicker ng-model="vm.from" md-placeholder="From"></md-datepicker>
-    <md-datepicker ng-model="vm.to" md-placeholder="To"></md-datepicker>
+    <md-datepicker ng-model="vm.date" md-placeholder="On Date"></md-datepicker>
 </md-content>
 <div style="padding: 10px 0"></div>
 <span>Time:</span>
 <div id="time">
 <div class="timePickers">
-    <span>From</span>
-    <ng-timepicker ng-model="vm.fromTime" theme="blue"></ng-timepicker>
-</div>
-
-<div class="timePickers" style="padding-left: 40px;">
-    <span>To</span>
-    <ng-timepicker ng-model="vm.toTime" theme="blue"></ng-timepicker>
+    <span>On time</span>
+    <ng-timepicker ng-model="vm.time" init-time="{{vm.time}}" theme="blue"></ng-timepicker>
 </div>
 </div>
 
