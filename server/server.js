@@ -220,14 +220,6 @@ app.get('/getLocations', function (request, response) {
         response.json(res);
     });
 
-    /*
-    var res = [];
-
-    for(i in clients) {
-        res.push({screenId: clients[i].screenId, location: clients[i].location});
-    }
-*/
-
 });
 app.get('/getConnectedScreens', function (request, response) {
     response.status(200);

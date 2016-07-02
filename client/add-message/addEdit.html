@@ -86,6 +86,7 @@
 
     <div class="field">
         <span class="field_names">Time frames:</span>
+        <button class="add" ng-click="vm.addTimeFrame()">+</button>
         <ul class="time_frames">
             <li ng-repeat="frame in vm.message.timeFrame">
                 <div>
@@ -97,6 +98,9 @@
                     <span>From time:</span><input type="time" ng-model="frame.fromTime" required>
                     <span>To time:</span><input type="time" ng-model="frame.toTime" required>
                     <span class="error" ng-show="!frame.fromTime || !frame.toTime">must fill message hours of screening</span>
+
+                    <span><button class="remove" ng-click="vm.delete(frame, vm.message.timeFrame)" ng-disabled="vm.message.timeFrame.length <= 1">X</button>
+                    <span ng-show="vm.message.timeFrame.length <= 1" class="error" ng-cloak>must have at least one time frame</span></span>
                 </div>
 
                 <div>

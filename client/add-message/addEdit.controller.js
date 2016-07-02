@@ -70,6 +70,12 @@
             }
         };
 
+        vm.addTimeFrame = function() {
+          vm.message.timeFrame.push({fromDate: new Date(), toDate: new Date,
+              fromTime: new Date(1970, 0, 1, 0, 0, 0),
+              toTime: new Date(1970, 0, 1, 0, 0, 0), days: []});
+        };
+
         vm.clearSearchTerm = function () {
             vm.searchTerm = "";
         };
