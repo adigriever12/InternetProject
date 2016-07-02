@@ -19,8 +19,21 @@
             });
         }
 
+        function insertMessage(message) {
+            var url = 'http://localhost:8080/insertNewMessage';
+
+            var data = {
+                message:   message
+            };
+
+            return $http({method: "POST", url: url, data: data}).then(function (response) {
+                return response.data;
+            });
+        }
+
         return {
-            updateMessage: updateMessage
+            updateMessage: updateMessage,
+            insertMessage: insertMessage
         }
     }
 }());

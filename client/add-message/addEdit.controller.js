@@ -41,7 +41,9 @@
         } else {
             vm.message.texts = [{id: 0, value: ""}];
             vm.message.pictures = [];
-            vm.message.timeFrame = [""];
+            vm.message.timeFrame = [{fromDate: new Date(), toDate: new Date,
+                fromTime: new Date(1970, 0, 1, 0, 0, 0),
+                toTime: new Date(1970, 0, 1, 0, 0, 0), days: []}];
         }
 
         messagesService.getAllURls().then(function (response) {
@@ -73,32 +75,31 @@
         };
 
         vm.save = function () {
+            var requestMessage = {};
+            angular.copy(vm.message, requestMessage);
+
+            vm.message.timeFrame.forEach(function (curr, index) {
+                var fromTime = vm.message.timeFrame[index].fromTime;
+                requestMessage.timeFrame[index].fromTime = ("0" + fromTime.getHours()).slice(-2) + ":" + ("0" + fromTime.getMinutes()).slice(-2);
+
+                var toTime = vm.message.timeFrame[index].toTime;
+                requestMessage.timeFrame[index].toTime = ("0" + toTime.getHours()).slice(-2) + ":" + ("0" + toTime.getMinutes()).slice(-2);
+
+                requestMessage.timeFrame[index].fromDate = requestMessage.timeFrame[index].fromDate.toISOString();
+                requestMessage.timeFrame[index].toDate = requestMessage.timeFrame[index].toDate.toISOString();
+            });
+
+            requestMessage.pictures = requestMessage.pictures.map(function (curr) {
+                return curr.value
+            });
+
+            requestMessage.texts = requestMessage.texts.map(function (curr) {
+                return curr.value
+            });
+
             // update
             if (messageId) {
-                var requestMessage = {};
-                angular.copy(vm.message, requestMessage);
                 requestMessage.id = messageId;
-
-                vm.message.timeFrame.forEach(function (curr, index) {
-                    var fromTime = vm.message.timeFrame[index].fromTime;
-                    requestMessage.timeFrame[index].fromTime = ("0" + fromTime.getHours()).slice(-2) + ":" + ("0" + fromTime.getMinutes()).slice(-2);
-
-                    var toTime = vm.message.timeFrame[index].toTime;
-                    requestMessage.timeFrame[index].toTime = ("0" + toTime.getHours()).slice(-2) + ":" + ("0" + toTime.getMinutes()).slice(-2);
-
-                    requestMessage.timeFrame[index].fromDate = requestMessage.timeFrame[index].fromDate.toGMTString();
-                    requestMessage.timeFrame[index].toDate = requestMessage.timeFrame[index].toDate.toGMTString();
-                });
-
-                requestMessage.pictures = requestMessage.pictures.map(function (curr) {
-                    return curr.value
-                });
-
-                requestMessage.texts = requestMessage.texts.map(function (curr) {
-                    return curr.value
-                });
-
-
                 addEditService.updateMessage(requestMessage).then(function(result) {
                     if (result) {
                         alert('updated successfully');
@@ -107,7 +108,13 @@
                     }
                 });
             } else { // new message
-
+                addEditService.insertMessage(requestMessage).then(function(result) {
+                    if (result) {
+                        alert('insert message successfully');
+                    } else {
+                        alert('insertion failed');
+                    }
+                });
             }
         };
     }

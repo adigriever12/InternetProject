@@ -17,7 +17,7 @@
                           placeholder="{{text.value == '' ? 'type text here...' : ''}}"
                           ng-required="vm.message.texts.length <= 1 || vm.message.texts.length >= 10"></textarea>
                 <span><button class="remove" ng-click="vm.delete(text, vm.message.texts)" ng-disabled="vm.message.texts.length <= 1">X</button></span>
-                <span ng-if="innerTextForm.text_name.$error.required" ng-cloak>at least one text field, and maximum of 10</span>
+                <span class="error" ng-if="innerTextForm.text_name.$error.required" ng-cloak>at least one text field, and maximum of 10</span>
             </ng-form>
         </div>
     </div>

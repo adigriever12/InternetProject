@@ -27,13 +27,15 @@ var queryMongo = function (screenId, callback, fromDate, toDate, day, fromTime, 
     });
 };
 
-var updateMongo = function (newMesseage) {
+var updateMongo = function (newMesseage, callback) {
     MongoClient.connect(url, function (err, db) {
-
-        assert.equal(null, err);
-
-        db.collection('messages').insert(newMesseage);
-        db.close();
+        if (err) {
+            callback(false);
+        } else {
+            db.collection('messages').insert(newMesseage);
+            db.close();
+            callback(true);
+        }
     });
 };
 
@@ -43,11 +45,11 @@ var findFramesForAd = function (db, screenId, fromDate, toDate, day, fromTime, t
         frames: {$in: screenId},
         timeFrame: {
             $elemMatch: {
-                fromDate: {$lt: fromDate},
-                toDate: {$gt: toDate},
+                fromDate: {$lte: new Date(fromDate)},
+                toDate: {$gte: new Date(toDate)},
                 days: {$in: day},
-                fromTime: {$lt: fromTime},
-                toTime: {$gt: toTime}
+                fromTime: {$lte: fromTime},
+                toTime: {$gte: toTime}
             }
         }
     }).toArray(function (err, docs) {

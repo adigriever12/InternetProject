@@ -132,8 +132,8 @@ app.post('/getScreensIdsByConditions', function (request, response) {
     var screenIds = request.body.ids.map(function (id) {
         return Number(id);
     });
-    var fromDate = new Date(request.body.fromDate);
-    var toDate = new Date(request.body.toDate);
+    var fromDate = request.body.fromDate;
+    var toDate = request.body.toDate;
     var days = request.body.days;
     var fromTime = request.body.fromTime;
     var toTime = request.body.toTime;
@@ -236,6 +236,14 @@ app.get('/getConnectedScreens', function (request, response) {
 
 app.get('/getAllUrlTemplates', function (request, response) {
     mongo.getAllURls(function (res) {
+        response.status(200);
+        response.json(res);
+    });
+});
+
+app.post('/insertNewMessage', function (request, response) {
+    var message = request.body.message;
+    mongo.updateMongo(message, function(res) {
         response.status(200);
         response.json(res);
     });
