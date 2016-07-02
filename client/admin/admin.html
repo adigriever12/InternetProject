@@ -1,11 +1,13 @@
 
 <div style="width: 15%;background-color: #3ab2d5;">
-    <ul id="panel">
-        <li class="menu_item" ng-repeat="item in vm.menu">
-            <a ng-href="#/{{item.link}}" ng-click="vm.setChosen(item)">
-                <span class="{{item.img}}" style="padding-right: 5px"></span>
-                {{item.name}}
-            </a>
-        </li>
-    </ul>
+    <nav>
+        <ul id="panel">
+            <li class="menu_item" ng-repeat="item in vm.menu">
+                <a ng-href="#/{{item.link}}" ng-click="vm.setChosen(item)">
+                    <span class="{{item.img}}" style="padding-right: 5px"></span>
+                    {{item.name}}
+                </a>
+            </li>
+        </ul>
+     </nav>
 </div>

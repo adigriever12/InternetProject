@@ -27,7 +27,7 @@ io.on('connection', function(socket) {
     socket.emit('connected');
     socket.on('getData', function(data) {
         clients.push({socket:socket, location:data.location, screenId:data.screenId});
-        updateScreensHistory(data.screenId, data.location);
+        updateScreensHistory(data.screenId, data.location, data.city);
         console.log(socket.id + ' is connected');
         mongo.queryMongo(Number(data.screenId), function (docs) {
             socket.emit('screensData', docs);
@@ -56,8 +56,8 @@ var listenToConnections = function (screenId, fromDate, toDate, day, fromTime, t
         console.log(client.id + ' is connected');
     });
 };
-var updateScreensHistory = function(screenId, location) {
-	mongo.updateHistory(screenId, location, function (docs) {
+var updateScreensHistory = function(screenId, location, city) {
+	mongo.updateHistory(screenId, location, city, function (docs) {
         console.log('history updated');
     });
     };
@@ -246,6 +246,17 @@ app.post('/insertNewMessage', function (request, response) {
     mongo.updateMongo(message, function(res) {
         response.status(200);
         response.json(res);
+    });
+});
+
+app.get('/getScreensCity', function (request, response) {
+    MongoClient.connect(url, function (err, db) {
+        db.collection('screensHistory').group(['city'], {}, {"count":0}, "function (obj, prev) { prev.count++; }",
+            function(err, results) {
+                response.header('Access-Control-Allow-Origin', '*');
+                response.status(200);
+                response.json(results);
+            });
     });
 });
 

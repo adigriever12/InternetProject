@@ -42,15 +42,34 @@
 		}
 	};
 
+	var getCity = function(results) {
+		for (i in results) {
+			if ((results[i].types.indexOf("locality") != -1) ||
+				(results[i].types.indexOf("administrative_area_level_3") != -1)) {
+				return results[i].formatted_address
+			}
+		}
+		return "Israel";
+	};
+
 	$(document).ready(function() {
 		var server = io.connect('http://localhost:8080');
 
 		server.on('connected', function(data) {
 			GMaps.geolocate({
 				success: function (position) {
-					server.emit("getData", {
-						screenId: window.location.pathname.split('=')[1],
-						location: {lat: position.coords.latitude, lng: position.coords.longitude}
+					var geocoder = new google.maps.Geocoder();
+					var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+					var city = "Israel";
+					geocoder.geocode({'latLng': latlng}, function(results, status) {
+						if (status == google.maps.GeocoderStatus.OK) {
+							city = getCity(results);
+							server.emit("getData", {
+								screenId: window.location.pathname.split('=')[1],
+								location: {lat: position.coords.latitude, lng: position.coords.longitude},
+								city: city
+							});
+						}
 					});
 				}
 			});

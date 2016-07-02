@@ -1,0 +1,52 @@
+<div id="about">
+    <header class="header">
+        <h1><b>About</b></h1>
+    </header>
+
+    <section>
+        <h1 class="header">Future work</h1>
+        <div id="text">
+            A Great Concept in outdoor movile advertising if your opening a bar, restaurant, an architect exhibiting new design or a supermarket opening a new store,be sure everyone has a look at your advert!
+            Built from LED ensures a bright image. Stationery this advertising truck can lift up to 6m in the air.
+        </div>
+        <br>
+        <aside>
+            Great for concerts and fesitvals.
+        </aside>
+        <video width="400" controls>
+            <source src="./about/futureWork.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+
+    </section>
+    <section>
+        <h1 class="header">Contact us</h1>
+        <ul>
+            <li> adi@gmail.com </li>
+            <li> dana@gmail.com </li>
+        </ul>
+    </section>
+    <footer>
+        <canvas id="myCanvas" width="250" height="50">
+            Your browser does not support the HTML5 canvas tag.
+        </canvas>
+    </footer>
+</div>
+<script>
+
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.font = "30px Verdana";
+
+    // Create gradient
+    var gradient = ctx.createLinearGradient(0, 0, c.width, 0);
+    gradient.addColorStop("0", "#3ab2d5");
+    gradient.addColorStop("0.5", "#104858");
+    gradient.addColorStop("1.0", "#02182f");
+
+    // Fill with gradient
+    ctx.fillStyle = gradient;
+    ctx.fillText("Adi & Dana", 20, 25);
+    ctx.textAlign = "center";
+</script>
