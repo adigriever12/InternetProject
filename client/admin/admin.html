@@ -3,7 +3,7 @@
     <nav>
         <ul id="panel">
             <li class="menu_item" ng-repeat="item in vm.menu">
-                <a ng-href="#/{{item.link}}" ng-click="vm.setChosen(item)">
+                <a id="{{item.link}}" ng-href="#/{{item.link}}" ng-click="vm.setChosen(item)" ng-class="vm.current == item.link ? 'selected_button' : ''">
                     <span class="{{item.img}}" style="padding-right: 5px"></span>
                     {{item.name}}
                 </a>

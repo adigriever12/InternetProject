@@ -27,6 +27,11 @@
                 controller: 'addEditController',
                 controllerAs: 'vm'
             })
+            .when('/manageData', {
+                templateUrl: 'manage-data/manageData.html',
+                controller: 'manageDataController',
+                controllerAs: 'vm'
+            })
             .when('/maps', {
                 templateUrl: 'maps/maps.html',
                 controller: 'mapsController',

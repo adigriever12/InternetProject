@@ -3,7 +3,7 @@ ul#panel li.menu_item a:hover {
     cursor: pointer;
 }
 
-ul#panel li.menu_item a.selected {
+ul#panel li.menu_item a.selected_button {
     background-color: #6ec6e4;
 }
 
