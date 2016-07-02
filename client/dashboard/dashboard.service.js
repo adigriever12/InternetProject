@@ -17,9 +17,15 @@
                 return response.data;
             });
         }
+        function getScreensCity() {
+            return $http.get('http://localhost:8080/getScreensCity').then(function(response) {
+                return response.data;
+            });
+        }
         return {
             'getMessages': getMessages,
-            'connectedScreens': connectedScreens
+            'connectedScreens': connectedScreens,
+            'getScreensCity': getScreensCity
         }
     }
 }());

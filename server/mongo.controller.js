@@ -96,13 +96,13 @@ var getMessageById = function(id, callback) {
     });
 };
 
-var updateHistory = function(screenId, location, callback) {
+var updateHistory = function(screenId, location, city, callback) {
 
     MongoClient.connect(url, function (err, db) {
 
         assert.equal(null, err);
 
-        db.collection('screensHistory').insert({id:screenId, date:new Date(), location:location});
+        db.collection('screensHistory').insert({id:screenId, date:new Date(), location:location, city:city});
         db.close();
         callback(true);
     });
