@@ -22,7 +22,8 @@
                 });
                 //vm.message.url = response.url;//vm.selectedUrl
                 vm.selectedUrl = response.url;
-                vm.message.length = parseInt(response.length, 10);
+                vm.message.length = response.length;
+                vm.message.price = response.price;
                 vm.message.frames = response.frames;
                 vm.message.timeFrame = [];//response.timeFrame;
 
