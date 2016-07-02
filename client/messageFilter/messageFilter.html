@@ -1,0 +1,51 @@
+<div>
+    <div>
+        <h1>Select filter</h1>
+           Filter
+            <select ng-model="vm.selectedFilter" ng-options="x for x in vm.filters" ng-change="vm.getFilterValues()">
+            </select>
+
+            Value
+            <select ng-model="vm.selectedValue" ng-options="x.key for x in vm.values" ng-change="vm.getFilteredMessages()">
+            </select>
+    </div>
+    <h1>Results</h1>
+    <ul id="messages-list">
+       <li class="message" ng-repeat="message in vm.messages">
+           <div>
+               <span>Name: {{message.name}}</span>
+               <button ng-click="vm.edit(message)">Edit</button>
+               <button ng-click="vm.delete(message)">Delete</button>
+           </div>
+           <div>
+               Texts: {{message.texts.toString()}}
+           </div>
+           <div>
+               Pictures: {{message.pictures.toString()}}
+           </div>
+           <div>
+               URL template: {{message.url}}
+           </div>
+           <div>
+               Duration: {{message.length}}
+           </div>
+           <span>Screens:</span>
+           <ul>
+               <li ng-repeat="screen in message.frames">{{screen}}</li>
+           </ul>
+
+           <span>Time frames:</span>
+           <ul class="time_frames">
+               <li ng-repeat="frame in message.timeFrame">
+                   <span>From date:{{frame.fromDate | amDateFormat:'DD-MM-YYYY'}}</span>
+                   <span>To date:{{frame.toDate | amDateFormat:'DD-MM-YYYY'}}</span>
+                   <span>From time:{{frame.fromTime}}</span>
+                   <span>To time:{{frame.toTime}}</span>
+                   <span>On days:{{frame.days.toString()}}</span>
+               </li>
+           </ul>
+           <hr/>
+       </li>
+
+   </ul>
+   </div>

@@ -12,6 +12,8 @@
         vm.menu = [
             {name: 'Dashboard', link: 'dashboard', img: 'glyphicon glyphicon-stats'},
             {name: 'View Message', link: 'messages', img: 'glyphicon glyphicon-eye-open'},
+            {name: 'Message filter',link: 'messageFilter', img: 'glyphicon glyphicon-search'},
+            {name: 'Screens history filter',link: 'screensHistoryFilter', img: 'glyphicon glyphicon-search'},
             {name: 'New Messages', link: 'addEdit', img: 'glyphicon glyphicon-plus'},
             {name: 'Manage Data', link: '', img: 'glyphicon glyphicon-pencil'},
             {name: 'Display Live Screen', link: 'displayScreens', img: 'glyphicon glyphicon-blackboard'},

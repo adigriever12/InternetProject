@@ -1,0 +1,34 @@
+<div>
+    <div>
+        <h1>Select filter</h1>
+        Filter
+        <select ng-model="vm.selectedFilter" ng-options="x for x in vm.filters" ng-change="vm.getFilterValues()">
+        </select>
+
+        Value
+        <select ng-model="vm.selectedValue" ng-options="x.key for x in vm.values" ng-change="vm.getFilteredData()">
+        </select>
+    </div>
+
+    <h1>Results</h1>
+    <ul id="messages-list">
+        <li class="message" ng-repeat="data in vm.data">
+
+            <div>
+                Screen id: {{data.id.toString()}}
+            </div>
+            <div>
+                Date: {{data.date}}
+            </div>
+            <div>
+                City: {{data.city.toString()}}
+            </div>
+            <div>
+                Location: latitude {{data.location.lat.toString()}} longtitude {{data.location.lng.toString()}}
+            </div>
+
+            <hr/>
+        </li>
+
+    </ul>
+</div>
