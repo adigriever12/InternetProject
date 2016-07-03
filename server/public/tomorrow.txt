@@ -1,0 +1,17 @@
+<html ng-view>
+</html>
+
+route for:
+/home?q=...&filter_query=...
+/dirs/.../
+/shooping/.../
+
+dirs, shooping
+
+<html>
+<header>
+<second>
+<ng-include src="src for dirs directive or cart directive. when action, change src to other"> default: dirs (saveStateCookies)
+</html>
+
+copy header's html and make them same class fot css 

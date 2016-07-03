@@ -29,8 +29,9 @@
 	var replaceAds = function(ad) {
 		$("#texts").empty();
 		$("#pics").empty();
-		$("#result").load( "./" + ad.url);
-
+		if (ad.url) {
+			$("#result").load("./" + ad.url);
+		}
 		// set texts
 		for (var i = 0; i < ad.texts.length; i++) {
 			$("#texts").append('<textarea>' + ad.texts[i] + '</textarea>');

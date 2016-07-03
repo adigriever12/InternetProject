@@ -2,10 +2,10 @@
     <div id="header">
         <span>Filter by name:<input ng-model="filterName"></span>
         <span>Filter by screen:<input ng-model="filterScreen"></span>
-        <span><button>Add new Message</button></span>
+        <span>Filter by Text:<input ng-model="filterText"></span>
     </div>
     <ul id="messages-list">
-        <li class="message" ng-repeat="message in vm.messages | filter:{name:filterName} | filter:{frames:filterScreen}">
+        <li class="message" ng-repeat="message in vm.messages | filter:{name:filterName} | filter:{frames:filterScreen} | filter:{texts:filterText}">
             <div>
                 <span>Name: {{message.name}}</span>
                 <button ng-click="vm.edit(message)">Edit</button>

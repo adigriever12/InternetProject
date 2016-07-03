@@ -126,17 +126,14 @@ var getAllURls = function(callback) {
 
         assert.equal(null, err);
 
-        db.collection('messages').find({}, {url: 1, _id:0 }).toArray(function (err, docs) {
+        db.collection('templates').find({}).toArray(function (err, docs) {
             assert.equal(err, null);
             db.close();
 
-            var urls = [];
-            docs.forEach(function(curr) {
-               if (urls.indexOf(curr.url) == -1) {
-                   urls.push(curr.url);
-               }
+            var results = docs.map(function(curr) {
+                return curr._id;
             });
-            callback(urls);
+            callback(results);
         });
     });
 };
@@ -153,6 +150,85 @@ var updateMessage = function(message, callback) {
             db.close();
 
             callback(true);
+        });
+    });
+};
+
+var insertNewScreen = function(screenId, callback) {
+    MongoClient.connect(url, function (err, db) {
+
+        assert.equal(null, err);
+
+        db.collection('screens').insert({_id: screenId}, function (err, docs) {
+            if (err || docs.insertedCount != 1) {
+                callback(false);
+            }
+            db.close();
+            callback(true);
+        });
+    });
+};
+
+var deleteScreen = function(screenId, callback) {
+    MongoClient.connect(url, function (err, db) {
+
+        assert.equal(null, err);
+
+        db.collection('screens').deleteOne({"_id": screenId}, function (err, res) {
+            if (res.deletedCount == 1) {
+
+                // deleting screen from all containing messages
+                db.collection('messages').update({}, { $pull: { frames: { $in: [ screenId ] }} }, { multi: true }, function(err, docs) {
+                    if (err) {
+                        callback(false);
+                    }
+                    db.close();
+                    callback(true);
+                });
+
+            } else {
+                callback(false);
+            }
+        });
+    });
+};
+
+var insertNewUrl = function(urlId, callback) {
+    MongoClient.connect(url, function (err, db) {
+
+        assert.equal(null, err);
+
+        db.collection('templates').update({_id: urlId}, {_id: urlId},{upsert: true}, function (err, docs) {
+            if (err || docs.result.ok != 1) {
+                callback(false);
+            }
+            db.close();
+
+            callback(true);
+        });
+    });
+};
+
+var deleteUrl = function(urlId, callback) {
+    MongoClient.connect(url, function (err, db) {
+
+        assert.equal(null, err);
+
+        db.collection('templates').deleteOne({"_id": urlId}, function (err, res) {
+            if (res.deletedCount == 1) {
+
+                // deleting screen from all containing messages
+                db.collection('messages').update({url: urlId}, { $unset: {url: ""} }, { multi: true }, function(err, docs) {
+                    if (err) {
+                        callback(false);
+                    }
+                    db.close();
+                    callback(true);
+                });
+
+            } else {
+                callback(false);
+            }
         });
     });
 };
@@ -176,5 +252,9 @@ module.exports = {
     updateHistory: updateHistory,
     getLocations: getLocations,
     getAllURls: getAllURls,
-    updateMessage: updateMessage
+    updateMessage: updateMessage,
+    insertNewScreen: insertNewScreen,
+    deleteScreen: deleteScreen,
+    insertNewUrl: insertNewUrl,
+    deleteUrl: deleteUrl
 };

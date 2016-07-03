@@ -1,0 +1,25 @@
+.success {
+    color: #17ad17;
+}
+
+#inputFile {
+    display: inline-block;
+}
+
+button#upload {
+    height: 30px;
+    width: 30px;
+    padding-left: 5.2px;
+}
+
+button#upload[disabled] {
+    color: #bfbfbf;
+}
+
+div.divs {
+    margin-bottom: 20px;
+}
+
+div.divs input {
+    border: 1px rgba(128, 128, 128, 0.4) solid;
+}

@@ -4,8 +4,8 @@
     angular.module('addEdit')
         .controller('addEditController', addEditController);
 
-    addEditController.$inject = ['$routeParams', 'messagesService', 'liveScreenService', 'addEditService'];
-    function addEditController($routeParams, messagesService, liveScreenService, addEditService) {
+    addEditController.$inject = ['$routeParams', 'messagesService', 'addEditService'];
+    function addEditController($routeParams, messagesService, addEditService) {
         var vm = this;
 
         vm.message = {};
@@ -51,7 +51,7 @@
             vm.allURLs = response;
         });
 
-        liveScreenService.getScreens().then(function (response) {
+        messagesService.getAllScreens().then(function (response) {
             vm.allScreens = response;
         });
 

@@ -41,11 +41,28 @@
             });
         }
 
+        function getAllScreens() {
+            return $http.get('http://localhost:8080/getAllScreensIds').then(function(response) {
+                return response.data;
+            });
+        }
+
+        function getScreenId(params) {
+            var url = 'http://localhost:8080/getScreensIdsByConditions';
+
+            return $http({method: "POST", url: url, data: params}).then(function(response) {
+
+                return response.data;
+            });
+        }
+
         return {
             'getAllMessages': getAllMessages,
             'deleteMessage': deleteMessage,
             'getMessage': getMessage,
-            getAllURls: getAllURls
+            'getAllURls': getAllURls,
+            'getAllScreens': getAllScreens,
+            'getScreenId': getScreenId
         }
     }
 }());

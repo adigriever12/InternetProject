@@ -4,8 +4,8 @@
     angular.module('liveScreen')
         .controller('liveScreenController', liveScreenController);
 
-    liveScreenController.$inject = ['liveScreenService', '$sce'];
-    function liveScreenController(liveScreenService, $sce) {
+    liveScreenController.$inject = ['messagesService', '$sce'];
+    function liveScreenController(messagesService, $sce) {
         var vm = this;
 
         var now = new Date();
@@ -17,7 +17,7 @@
         // The md-select directive eats keydown events for some quick select
         // logic. Since we have a search input here, we don't need that logic.
 
-        liveScreenService.getScreens().then(function(response) {
+        messagesService.getAllScreens().then(function(response) {
              vm.screens = response;
         });
 
@@ -36,7 +36,7 @@
                 time: vm.time
             };
 
-            liveScreenService.getScreenId(params).then(function(response) {
+            messagesService.getScreenId(params).then(function(response) {
                 if (response.length > 0) {
                     vm.frames = response.map(function(curr) {
                         return {url: $sce.trustAsResourceUrl("http://localhost:8080/screen=" + curr),

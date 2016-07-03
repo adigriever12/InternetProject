@@ -21,27 +21,27 @@ app.use("/", express.static(path.join(__dirname, 'public')));
 
 var clients = [];
 
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
 
 
     socket.emit('connected');
-    socket.on('getData', function(data) {
-        clients.push({socket:socket, location:data.location, screenId:data.screenId});
+    socket.on('getData', function (data) {
+        clients.push({socket: socket, location: data.location, screenId: data.screenId});
         updateScreensHistory(data.screenId, data.location, data.city);
         console.log(socket.id + ' is connected');
         mongo.queryMongo(Number(data.screenId), function (docs) {
             socket.emit('screensData', docs);
         });
     });
-	
-	socket.on('disconnect', function () {
-		console.log(socket.id + ' is disconnected');
-		
-		// Delete socket from connected clients
-		clients = clients.filter( function(item) {
-			return (item.socket.id != socket.id);
-			});
-  });
+
+    socket.on('disconnect', function () {
+        console.log(socket.id + ' is disconnected');
+
+        // Delete socket from connected clients
+        clients = clients.filter(function (item) {
+            return (item.socket.id != socket.id);
+        });
+    });
 });
 
 var listenToConnections = function (screenId, fromDate, toDate, day, fromTime, toTime) {
@@ -56,28 +56,17 @@ var listenToConnections = function (screenId, fromDate, toDate, day, fromTime, t
         console.log(client.id + ' is connected');
     });
 };
-var updateScreensHistory = function(screenId, location, city) {
-	mongo.updateHistory(screenId, location, city, function (docs) {
+var updateScreensHistory = function (screenId, location, city) {
+    mongo.updateHistory(screenId, location, city, function (docs) {
         console.log('history updated');
     });
-    };
+};
 app.get(/\.js|\.html|\.png/, function (request, response) {
     response.sendFile(__dirname + request.url);
 });
 
 app.get('/screen=:id', function (request, response) {
     response.sendFile(__dirname + "/public/index.html");
-
-    var screenId = Number(request.params.id);
-	//updateScreensHistory(screenId);
-	
-    /*mongo.queryMongo(screenId, function (docs) {
-        client.emit('screensData', docs);
-    });
-
-    console.log(client.id + ' is connected');
-
-    listenToConnections(screenId);*/
 });
 
 app.get('/TestUpdate', function (request, response) {
@@ -192,8 +181,8 @@ app.post('/deleteMessageById', function (request, response) {
     });
 });
 
-app.get('/getMessageById', function(request, response) {
-   var id = request.query.id;
+app.get('/getMessageById', function (request, response) {
+    var id = request.query.id;
 
     mongo.getMessageById(id, function (res) {
         response.status(200);
@@ -203,7 +192,7 @@ app.get('/getMessageById', function(request, response) {
 
 app.get('/getLocations', function (request, response) {
 
-    mongo.getLocations(function(res) {
+    mongo.getLocations(function (res) {
         response.status(200);
         response.json(res);
     });
@@ -225,12 +214,12 @@ app.post('/updateMessage', function (request, response) {
     var message = request.body.message;
 
     // fix dates from string to date objects
-    message.timeFrame.forEach(function(curr, index) {
+    message.timeFrame.forEach(function (curr, index) {
         message.timeFrame[index].fromDate = new Date(message.timeFrame[index].fromDate);
         message.timeFrame[index].toDate = new Date(message.timeFrame[index].toDate);
     });
 
-    mongo.updateMessage(message, function(result) {
+    mongo.updateMessage(message, function (result) {
         response.status(200);
         response.json(result);
     });
@@ -239,7 +228,7 @@ app.post('/updateMessage', function (request, response) {
 
 app.post('/insertNewMessage', function (request, response) {
     var message = request.body.message;
-    mongo.updateMongo(message, function(res) {
+    mongo.updateMongo(message, function (res) {
         response.status(200);
         response.json(res);
     });
@@ -247,8 +236,8 @@ app.post('/insertNewMessage', function (request, response) {
 
 app.get('/getScreensCity', function (request, response) {
     MongoClient.connect(url, function (err, db) {
-        db.collection('screensHistory').group(['city'], {}, {"count":0}, "function (obj, prev) { prev.count++; }",
-            function(err, results) {
+        db.collection('screensHistory').group(['city'], {}, {"count": 0}, "function (obj, prev) { prev.count++; }",
+            function (err, results) {
                 response.header('Access-Control-Allow-Origin', '*');
                 response.status(200);
                 response.json(results);
