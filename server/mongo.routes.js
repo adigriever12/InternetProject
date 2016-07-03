@@ -67,16 +67,6 @@ app.get('/insertNewScreen', function(request, response) {
    });
 });
 
-app.get('/deleteScreen', function(request, response) {
-    var screenId = Number(request.query.id);
-
-    mongo.deleteScreen(screenId, function(res) {
-        response.status(200);
-        response.json(res);
-    });
-});
-
-
 // URL
 app.get('/getAllUrlTemplates', function (request, response) {
     mongo.getAllURls(function (res) {
@@ -105,50 +95,9 @@ app.get('/deleteUrl', function(request, response) {
 
 
 // Messages
-app.post('/updateMessage', function (request, response) {
-    var message = request.body.message;
-
-    // fix dates from string to date objects
-    message.timeFrame.forEach(function (curr, index) {
-        message.timeFrame[index].fromDate = new Date(message.timeFrame[index].fromDate);
-        message.timeFrame[index].toDate = new Date(message.timeFrame[index].toDate);
-    });
-
-    mongo.updateMessage(message, function (result) {
-        response.status(200);
-        response.json(result);
-    });
-
-});
-
-app.post('/insertNewMessage', function (request, response) {
-    var message = request.body.message;
-
-    // fix dates from string to date objects
-    message.timeFrame.forEach(function (curr, index) {
-        message.timeFrame[index].fromDate = new Date(message.timeFrame[index].fromDate);
-        message.timeFrame[index].toDate = new Date(message.timeFrame[index].toDate);
-    });
-
-    
-    mongo.updateMongo(message, function (res) {
-        response.status(200);
-        response.json(res);
-    });
-});
-
 app.get('/getAllMessages', function (request, response) {
 
     mongo.getAllMessages(function (res) {
-        response.status(200);
-        response.json(res);
-    });
-});
-
-app.post('/deleteMessageById', function (request, response) {
-    var id = request.body.id;
-
-    mongo.deleteMessageById(id, function (res) {
         response.status(200);
         response.json(res);
     });

@@ -69,6 +69,84 @@ app.get('/getConnectedScreens', function (request, response) {
     response.json(clients.length);
 });
 
+// Messages
+app.post('/insertNewMessage', function (request, response) {
+    var message = request.body.message;
+
+    // fix dates from string to date objects
+    message.timeFrame.forEach(function (curr, index) {
+        message.timeFrame[index].fromDate = new Date(message.timeFrame[index].fromDate);
+        message.timeFrame[index].toDate = new Date(message.timeFrame[index].toDate);
+    });
+
+
+    mongo.updateMongo(message, function (res) {
+        updateClients();
+        response.status(200);
+        response.json(res);
+    });
+});
+
+app.post('/updateMessage', function (request, response) {
+    var message = request.body.message;
+
+    // fix dates from string to date objects
+    message.timeFrame.forEach(function (curr, index) {
+        message.timeFrame[index].fromDate = new Date(message.timeFrame[index].fromDate);
+        message.timeFrame[index].toDate = new Date(message.timeFrame[index].toDate);
+    });
+
+    mongo.updateMessage(message, function (result) {
+        updateClients();
+
+        response.status(200);
+        response.json(result);
+    });
+
+});
+
+app.post('/deleteMessageById', function (request, response) {
+    var id = request.body.id;
+
+    mongo.deleteMessageById(id, function (res) {
+        clients.forEach(function (currClient) {
+            mongo.queryMongo(currClient.screenId, function (docs) {
+                currClient.socket.emit('screensData', docs);
+            });
+        });
+
+        response.status(200);
+        response.json(res);
+    });
+});
+
+// Screens
+app.get('/deleteScreen', function(request, response) {
+    var screenId = Number(request.query.id);
+
+    mongo.deleteScreen(screenId, function(res) {
+        updateClients();
+        response.status(200);
+        response.json(res);
+    });
+});
+var updateClients = function(){
+
+};
+
+var queryMongoDB = function(id, client) {
+
+};
+
+var updateClientsForScreen = function(screenId){
+    clients.forEach(function (currClient) {
+        if (screenId == currClient.screenId) {
+            mongo.queryMongo(currClient.screenId, function (docs) {
+                currClient.socket.emit('screensData', docs);
+            });
+        }
+    });
+};
 var multer = require('multer');
 
 var storage = multer.diskStorage({ //multers disk storage settings
