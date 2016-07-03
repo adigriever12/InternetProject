@@ -54,7 +54,7 @@
 
                 myLatLng.lat = parseFloat(vm.locations[i].location.lat);
                 myLatLng.lng = parseFloat(vm.locations[i].location.lng);
-
+                
                 var marker = new google.maps.Marker({
                     id: vm.locations[i].id,
                     map: map,

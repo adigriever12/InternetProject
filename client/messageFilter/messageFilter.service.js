@@ -17,11 +17,25 @@
                 return response.data;
             });
         }
-        function getFilteredMessages(filter, value) {
+        function getFilteredMessages(selectedUrlValue, selectedLengthValue, selectedPriceValue) {
             var find = {};
-          
-            find[filter] = value;
-
+            
+            if ((selectedUrlValue != null) && (selectedUrlValue.value != undefined) && (selectedUrlValue.value != ''))
+            {
+                find.url = selectedUrlValue.value;
+            }
+            if  ((selectedLengthValue != null) && (selectedLengthValue.value!= undefined) && (selectedLengthValue.value != ''))
+            {
+                find.length = selectedLengthValue.value;
+            }
+            if  ((selectedPriceValue != null) && (selectedPriceValue.value!= undefined) && (selectedPriceValue.value != ''))
+            {
+                find.price = selectedPriceValue.value;
+            }
+            if (find.length == 0) {
+                getAllMessages();
+                return;
+            }
             var url = 'http://localhost:8080/filteredMessages';
 
             var data = {

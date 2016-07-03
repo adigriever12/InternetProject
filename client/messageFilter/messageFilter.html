@@ -1,13 +1,39 @@
 <div>
     <div>
         <h1>Select filter</h1>
-           Filter
-            <select ng-model="vm.selectedFilter" ng-options="x for x in vm.filters" ng-change="vm.getFilterValues()">
-            </select>
 
-            Value
-            <select ng-model="vm.selectedValue" ng-options="x.key for x in vm.values" ng-change="vm.getFilteredMessages()">
-            </select>
+        <div class="row">
+            <div class="col-md-1">
+                Url
+            </div>
+            <div class="col-md-1">
+                <select ng-model="vm.selectedUrlValue" ng-options="x.key for x in vm.urlValues" ng-change="vm.getFilteredMessages()">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-1">
+                Length
+            </div>
+            <div class="col-md-1">
+                <select ng-model="vm.selectedLengthValue" ng-options="x.key for x in vm.lengthValues" ng-change="vm.getFilteredMessages()">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-1">
+                Price
+            </div>
+            <div class="col-md-1">
+                <select ng-model="vm.selectedPriceValue" ng-options="x.key for x in vm.priceValues" ng-change="vm.getFilteredMessages()">
+                    <option></option>
+                </select>
+            </div>
+        </div>
     </div>
     <h1>Results</h1>
     <ul id="messages-list">
@@ -28,6 +54,9 @@
            </div>
            <div>
                Duration: {{message.length}}
+           </div>
+           <div>
+               Price: {{message.price}}
            </div>
            <span>Screens:</span>
            <ul>

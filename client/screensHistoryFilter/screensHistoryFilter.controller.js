@@ -10,20 +10,29 @@
         var vm = this;
         vm.filters = [ "city", "year", "month" ];
 
-        vm.selectedFilter="";
-        vm.selectedValue={};
         vm.data = [];
 
-        vm.getFilterValues = function() {
+        vm.selectedCityValue = {};
+        vm.selectedMonthlValue = {};
+        vm.selectedYearValue = {};
+
+        for (var i in vm.filters)
+        {
+            var currValue = vm.filters[i];
+            //vm.selectedFilter = currValue;
+            getFilterValues(currValue);
+        }
+
+        function getFilterValues(filter){
             var $group = {};
-            if (vm.selectedFilter == 'city'){
+            if (filter == 'city'){
                 $group._id = {city: "$city"};
             }
             else {
                 $group._id = {};
 
-                $group._id[vm.selectedFilter] = {};
-                $group._id[vm.selectedFilter]['$' + vm.selectedFilter] = '$date';
+                $group._id[filter] = {};
+                $group._id[filter]['$' + filter] = '$date';
             }
             $group.count = {$sum: 1};
             var group = {$group: $group };
@@ -37,22 +46,29 @@
 
                     var val = {};
 
-                    val.key = response[i]._id[vm.selectedFilter] + ' (' + response[i].count + ')';
-                    val.value = response[i]._id[vm.selectedFilter];
+                    val.key = response[i]._id[filter] + ' (Total : ' + response[i].count + ')';
+                    val.value = response[i]._id[filter];
 
                     vm.values.push(val);
 
                 }
+                if(filter == 'city') {
+                    vm.cityValues = vm.values;
+                }
+                 else if(filter == 'month') {
+                    vm.monthValues = vm.values;
+                }
+                else {
+                    vm.yearValues = vm.values;
+                }
             });
 
             vm.getFilteredData = function() {
-                screensHistoryFilterService.getFilteredData(vm.selectedFilter, vm.selectedValue.value).then(function(response) {
-                    vm.data = response;
+                screensHistoryFilterService.getFilteredData(vm.selectedCityValue, vm.selectedMonthValue, vm.selectedYearValue)
+                    .then(function(response) {
+                        vm.data = response;
                 });
             };
-            
-
         };
-
     }
 }());

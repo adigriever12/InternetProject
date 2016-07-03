@@ -19,18 +19,26 @@
                 return response.data;
             });
         }
-        function getFilteredData(filter, value) {
+        function getFilteredData(selectedCityValue, selectedMonthValue, selectedYearValue) {
             var find = {};
-            if (filter == 'city') {
-                find[filter] = value;
-            }
-            else if(filter == 'month') {
-                find.$where = 'return this.date.getMonth() == ' + (value - 1);
-            }
-            else {
-                find.$where = 'return this.date.getFullYear() == ' + value;
-            }
 
+            if ((selectedCityValue != null) && (selectedCityValue.value != undefined) && (selectedCityValue.value != ''))
+            {
+                find.city = selectedCityValue.value;
+            }
+            if  ((selectedMonthValue != null) && (selectedMonthValue.value!= undefined) && (selectedMonthValue.value != ''))
+            {
+                find.$where = 'return this.date.getMonth() == ' + (selectedMonthValue.value - 1);
+            }
+            if  ((selectedYearValue != null) && (selectedYearValue.value!= undefined) && (selectedYearValue.value != '')) {
+                if (find.$where) {
+                    find.$where += ' && this.date.getFullYear() == ' + selectedYearValue.value;
+                }
+                else {
+                    find.$where = 'return this.date.getFullYear() == ' + selectedYearValue.value;
+                }
+            }
+            
             var url = 'http://localhost:8080/filteredData';
 
             var data = {

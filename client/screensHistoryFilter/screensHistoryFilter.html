@@ -1,13 +1,37 @@
 <div>
     <div>
         <h1>Select filter</h1>
-        Filter
-        <select ng-model="vm.selectedFilter" ng-options="x for x in vm.filters" ng-change="vm.getFilterValues()">
-        </select>
 
-        Value
-        <select ng-model="vm.selectedValue" ng-options="x.key for x in vm.values" ng-change="vm.getFilteredData()">
-        </select>
+        <div class="row">
+            <div class="col-md-1">
+                City
+            </div>
+            <div class="col-md-1">
+                <select ng-model="vm.selectedCityValue" ng-options="x.key for x in vm.cityValues" ng-change="vm.getFilteredData()">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                Year
+            </div>
+            <div class="col-md-1">
+                <select ng-model="vm.selectedYearValue" ng-options="x.key for x in vm.yearValues" ng-change="vm.getFilteredData()">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                Month
+            </div>
+            <div class="col-md-1">
+                <select ng-model="vm.selectedMonthValue" ng-options="x.key for x in vm.monthValues" ng-change="vm.getFilteredData()">
+                    <option></option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <h1>Results</h1>

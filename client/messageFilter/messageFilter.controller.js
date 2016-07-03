@@ -29,17 +29,25 @@
                                 value: {$gte:80,
                                     $lte:100,
                                     count:0}}]
-        vm.selectedFilter="";
-        vm.selectedValue={};
+       // vm.selectedFilter="";
+        //vm.selectedValue={};
         vm.messages = [];
+        vm.selectedLengthValue = {};
+        vm.selectedUrlValue = {};
+        vm.selectedPriceValue = {};
 
-        vm.getFilterValues = function() {
-            messageFilterService.getFilterValues(vm.selectedFilter).then(function(response) {
-                vm.messages = [];
-                vm.values = [];
-                vm.selectedValue = {};
+        for (var i in vm.filters)
+        {
+            var currValue = vm.filters[i];
 
-                if(vm.selectedFilter == 'price') {
+            getFilterValues(currValue);
+        }
+
+        function getFilterValues(filter) {
+            messageFilterService.getFilterValues(filter).then(function(response) {
+                var values = [];
+
+                if(filter == 'price') {
 
                     messageFilterService.getAllMessages().then(function(response) {
                         for(var i in response)
@@ -62,8 +70,10 @@
                                 $lte: vm.pricaRange[i].value.$lte,
                                 $gte: vm.pricaRange[i].value.$gte
                             };
-                            vm.values.push(val);
+                            values.push(val);
                         }
+
+                        vm.priceValues = values;
                     });
                 }
                 else {
@@ -71,17 +81,26 @@
 
                         var val = {};
 
-                        val.key = response[i][vm.selectedFilter] + ' (' + response[i].count + ')';
-                        val.value = response[i][vm.selectedFilter];
+                        val.key = response[i][filter] + ' (Total : ' + response[i].count + ')';
+                        val.value = response[i][filter];
 
-                        vm.values.push(val);
+                        values.push(val);
                     }
+                    if(filter == 'url')
+                    {
+                        vm.urlValues = values;
+                    }
+                    else {
+                        vm.lengthValues = values;
+                    }
+
                 }
             });
 
             vm.getFilteredMessages = function () {
-                messageFilterService.getFilteredMessages(vm.selectedFilter, vm.selectedValue.value).then(function (response) {
-                    vm.messages = response;
+                messageFilterService.getFilteredMessages(vm.selectedUrlValue, vm.selectedLengthValue, vm.selectedPriceValue)
+                    .then(function (response) {
+                        vm.messages = response;
                 });
             };
 
