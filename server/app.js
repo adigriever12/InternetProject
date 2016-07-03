@@ -33,6 +33,12 @@ io.on('connection', function(socket) {
         });
     });
 
+    socket.on('getUpdatedData', function(socketScreenId) {
+        mongo.queryMongo(Number(socketScreenId), function (docs) {
+            socket.emit('screensData', docs);
+        });
+    });
+
     socket.on('disconnect', function () {
         console.log(socket.id + ' is disconnected');
 
@@ -72,23 +78,15 @@ var storage = multer.diskStorage({ //multers disk storage settings
         cb(null, file.originalname);
     }
 });
-var upload = multer({storage: storage});//  .single('file');
 
-app.post('/upload', upload.single('file'), function(req, res) {
-    var fileName = req.file;
+var upload = multer({storage: storage});
 
-    //upload(req,res,function(err, result){
-        //if(err){
-        //    res.json({error_code:1,err_desc:err});
-        //    return;
-        //}
-        //res.json({error_code:0,err_desc:null});
+app.post('/upload', upload.single('file'), function(req, response) {
 
-        mongo.insertNewUrl(req.file.filename, function(res) {
-            response.status(200);
-            response.json(res);
-        });
-    //})
+    mongo.insertNewUrl(req.file.filename, function(res) {
+        response.status(200);
+        response.json(res);
+    });
 });
 
 server.listen(8080);

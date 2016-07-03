@@ -1,7 +1,7 @@
 <form novalidate name="editAdd" id="editAddForm">
     <div class="field">
         <span class="field_names">Name:</span><input name="name" ng-model="vm.message.name" required>
-        <span ng-if="!editAdd.name.$valid" class="error" ng-cloak>message must have a name</span>
+        <i ng-if="!editAdd.name.$valid" class="error" ng-cloak>message must have a name</i>
     </div>
 
     <div class="field">
@@ -17,7 +17,7 @@
                           placeholder="{{text.value == '' ? 'type text here...' : ''}}"
                           ng-required="vm.message.texts.length <= 1 || vm.message.texts.length >= 10"></textarea>
                 <span><button class="remove" ng-click="vm.delete(text, vm.message.texts)" ng-disabled="vm.message.texts.length <= 1">X</button></span>
-                <span class="error" ng-if="innerTextForm.text_name.$error.required" ng-cloak>at least one text field, and maximum of 10</span>
+                <i class="error" ng-if="innerTextForm.text_name.$error.required" ng-cloak>at least one text field, and maximum of 10</i>
             </ng-form>
         </div>
     </div>
@@ -57,20 +57,20 @@
                 </md-optgroup>
             </md-select>
         </md-input-container>
-        <span class="error" ng-cloak>{{vm.message.url ? '' : 'message must have a template'}}</span>
+        <i class="error" ng-cloak>{{vm.message.url ? '' : 'message must have a template'}}</i>
     </div>
 
     <div class="field">
         <span class="field_names">Duration (in milliseconds):</span><input name="length" min="1" type="number" ng-model="vm.message.length" required>
-        <span class="error" ng-show="editAdd.length.$error.required" ng-cloak>length is required</span>
-        <span class="error" ng-show="editAdd.length.$error.number" ng-cloak>Not valid number!</span>
+        <i class="error" ng-show="editAdd.length.$error.required" ng-cloak>length is required</i>
+        <i class="error" ng-show="editAdd.length.$error.number" ng-cloak>Not valid number!</i>
     </div>
 
     <div class="field">
         <span class="field_names">Price (in $):</span>
         <input type="number" name="price" placeholder="Decimal" ng-model="vm.message.price" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" required>
-        <span class="error" ng-show="editAdd.price.$error.required" ng-cloak>price is required</span>
-        <span class="error" ng-show="editAdd.price.$error.number" ng-cloak>Not valid number!</span>
+        <i class="error" ng-show="editAdd.price.$error.required" ng-cloak>price is required</i>
+        <i class="error" ng-show="editAdd.price.$error.number" ng-cloak>Not valid number!</i>
     </div>
 
     <div class="field">
@@ -88,7 +88,7 @@
                 </md-optgroup>
             </md-select>
         </md-input-container>
-        <span class="error" ng-cloak ng-show="editAdd.screensSelect.$error.required">must have at least one screen</span>
+        <i class="error" ng-cloak ng-show="editAdd.screensSelect.$error.required">must have at least one screen</i>
     </div>
 
     <div class="field">
@@ -99,15 +99,15 @@
                 <div>
                     <span>From date:</span><input type="date" ng-model="frame.fromDate" placeholder="frame.fromDate" required>
                     <span>To date:</span><input type="date" ng-model="frame.toDate" required>
-                    <span class="error" ng-show="!frame.fromDate || !frame.toDate">must fill message dates of screening</span>
+                    <i class="error" ng-show="!frame.fromDate || !frame.toDate">must fill message dates of screening</i>
                 </div>
                 <div>
                     <span>From time:</span><input type="time" ng-model="frame.fromTime" required>
                     <span>To time:</span><input type="time" ng-model="frame.toTime" required>
-                    <span class="error" ng-show="!frame.fromTime || !frame.toTime">must fill message hours of screening</span>
+                    <i class="error" ng-show="!frame.fromTime || !frame.toTime">must fill message hours of screening</i>
 
                     <span><button class="remove" ng-click="vm.delete(frame, vm.message.timeFrame)" ng-disabled="vm.message.timeFrame.length <= 1">X</button>
-                    <span ng-show="vm.message.timeFrame.length <= 1" class="error" ng-cloak>must have at least one time frame</span></span>
+                    <i ng-show="vm.message.timeFrame.length <= 1 && frame.days.length == 0" class="error" ng-cloak>must have at least one time frame</i></span>
                 </div>
 
                 <div>
@@ -125,7 +125,7 @@
                             </md-optgroup>
                         </md-select>
                     </md-input-container>
-                    <span class="error" ng-cloak ng-show="editAdd.daysSelect.$error.required">must have at least one day</span>
+                    <i class="error" ng-cloak ng-show="editAdd.daysSelect.$error.required || frame.days.length == 0">must have at least one day</i>
                 </div>
 
             </li>
@@ -136,7 +136,7 @@
         <button id="submit" type="submit" ng-click="vm.save()" ng-disabled="editAdd.$invalid">
             Save
         </button>
-        <span ng-if="editAdd.$invalid" class="error" ng-cloak>fix inputs according to error messages</span>
+        <i ng-if="editAdd.$invalid" class="error" ng-cloak>fix inputs according to error messages</i>
     </div>
 </form>
 

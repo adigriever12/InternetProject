@@ -65,7 +65,7 @@
 					geocoder.geocode({'latLng': latlng}, function(results, status) {
 						if (status == google.maps.GeocoderStatus.OK) {
 							city = getCity(results);
-							server.emit("getData", {
+							server.emit('getData', {
 								screenId: window.location.pathname.split('=')[1],
 								location: {lat: position.coords.latitude, lng: position.coords.longitude},
 								city: city
@@ -74,6 +74,10 @@
 					});
 				}
 			});
+		});
+		
+		server.on('dataChanged', function() {
+			server.emit('getUpdatedData');
 		});
 
 		// get initial data
