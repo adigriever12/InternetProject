@@ -177,4 +177,67 @@ app.get('/getLocations', function (request, response) {
 
 });
 
+
+// FILTER
+app.get('/getFilterValues=:filter', function (request, response) {
+    var filter = request.params.filter;
+
+    MongoClient.connect(url, function (err, db) {
+        db.collection('messages').group([filter], {}, {"count":0}, "function (obj, prev) { prev.count++; }",
+            function(err, results) {
+                response.header('Access-Control-Allow-Origin', '*');
+                response.status(200);
+                response.json(results);
+            });
+    });
+});
+
+app.post('/historyFilterValuesGet', function (request, response) {
+    var group = request.body.group;
+
+    MongoClient.connect(url, function (err, db) {
+        db.collection('screensHistory').aggregate(
+            [
+                group
+            ]
+        ).toArray(function (err, docs) {
+            response.header('Access-Control-Allow-Origin', '*');
+            response.status(200);
+            response.json(docs);
+
+        });
+    });
+});
+
+app.post('/filteredMessages', function (request, response) {
+    var findQuery = request.body.find;
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+
+        db.collection('messages').find(findQuery).toArray(function (err, docs) {
+            assert.equal(err, null);
+            db.close();
+            response.header('Access-Control-Allow-Origin', '*');
+            response.status(200);
+            response.json(docs);
+        });
+    });
+});
+
+app.post('/filteredData', function (request, response) {
+    var findQuery = request.body.find;
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+
+        db.collection('screensHistory').find(findQuery).toArray(function (err, docs) {
+            assert.equal(err, null);
+            db.close();
+            response.header('Access-Control-Allow-Origin', '*');
+            response.status(200);
+            response.json(docs);
+        });
+    });
+});
+
+
 module.exports = app;
