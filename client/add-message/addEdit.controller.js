@@ -44,11 +44,16 @@
             vm.message.pictures = [];
 
             var date = new Date();
-            date.setUTCHours(0, 0, 0, 0);
+            date.setUTCHours(0);
+            date.setUTCMinutes(0);
+            date.setUTCSeconds(0);
+            date.setUTCMilliseconds(0);
 
-            vm.message.timeFrame = [{fromDate: date, toDate: date,
+            vm.message.timeFrame = [{
+                fromDate: date, toDate: date,
                 fromTime: new Date(1970, 0, 1, 0, 0, 0),
-                toTime: new Date(1970, 0, 1, 0, 0, 0), days: []}];
+                toTime: new Date(1970, 0, 1, 0, 0, 0), days: []
+            }];
         }
 
         messagesService.getAllURls().then(function (response) {
@@ -75,10 +80,17 @@
             }
         };
 
-        vm.addTimeFrame = function() {
-          vm.message.timeFrame.push({fromDate: new Date(), toDate: new Date(),
-              fromTime: new Date(1970, 0, 1, 0, 0, 0),
-              toTime: new Date(1970, 0, 1, 0, 0, 0), days: []});
+        vm.addTimeFrame = function () {
+            var date = new Date();
+            date.setUTCHours(0);
+            date.setUTCMinutes(0);
+            date.setUTCSeconds(0);
+            date.setUTCMilliseconds(0);
+            vm.message.timeFrame.push({
+                fromDate: date, toDate: date,
+                fromTime: new Date(1970, 0, 1, 0, 0, 0),
+                toTime: new Date(1970, 0, 1, 0, 0, 0), days: []
+            });
         };
 
         vm.clearSearchTerm = function () {
@@ -87,12 +99,12 @@
 
         vm.currentFile = [];
 
-        vm.deletePicture = function(picture) {
+        vm.deletePicture = function (picture) {
             var index = vm.message.pictures.indexOf(picture);
             vm.message.pictures.splice(index, 1);
         };
 
-        vm.fileChanged = function(picture, files) {
+        vm.fileChanged = function (picture, files) {
             if (files.length > 0) {
                 $scope.$apply(function () {
                     if (files[0].type.indexOf("image") == -1) {
@@ -103,10 +115,6 @@
                     }
                 });
             }
-        };
-
-        vm.fileInput = function(picture) {
-
         };
 
         vm.save = function () {
@@ -122,10 +130,10 @@
 
                 //requestMessage.timeFrame[index].fromDate.setHours(0, 0, 0, 0);// = requestMessage.timeFrame[index].fromDate.toISOString();
                 //requestMessage.timeFrame[index].toDate.setHours(0, 0, 0, 0);// = requestMessage.timeFrame[index].toDate.toISOString();
-                var fromDate = requestMessage.timeFrame[index].fromDate;
-                requestMessage.timeFrame[index].fromDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 0, 0, 0).toUTCString();
-                var toDate = requestMessage.timeFrame[index].toDate;
-                requestMessage.timeFrame[index].toDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 0, 0, 0).toUTCString();
+                //var fromDate = requestMessage.timeFrame[index].fromDate;
+                //requestMessage.timeFrame[index].fromDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 0, 0, 0).toUTCString();
+                //var toDate = requestMessage.timeFrame[index].toDate;
+                //requestMessage.timeFrame[index].toDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 0, 0, 0).toUTCString();
             });
 
             requestMessage.pictures = requestMessage.pictures.map(function (curr) {
@@ -139,7 +147,7 @@
             // update
             if (messageId) {
                 requestMessage.id = messageId;
-                addEditService.updateMessage(requestMessage).then(function(result) {
+                addEditService.updateMessage(requestMessage).then(function (result) {
                     if (result) {
                         alert('updated successfully');
                     } else {
@@ -147,7 +155,7 @@
                     }
                 });
             } else { // new message
-                addEditService.insertMessage(requestMessage).then(function(result) {
+                addEditService.insertMessage(requestMessage).then(function (result) {
                     if (result) {
                         alert('insert message successfully');
                     } else {

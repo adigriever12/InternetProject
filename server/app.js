@@ -168,5 +168,14 @@ app.post('/upload', upload.single('file'), function (req, response) {
     });
 });
 
+
+app.post('/multipleUploads', upload.array('photos', 12), function (req, response) {
+
+    mongo.insertNewUrl(req.file.filename, function (res) {
+        response.status(200);
+        response.json(res);
+    });
+});
+
 server.listen(8080);
 console.log('listening on port 8080');
