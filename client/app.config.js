@@ -44,6 +44,16 @@
             })
             .when('/about', {
                 templateUrl: 'about/about.html'
+            })
+            .when('/messageFilter', {
+                templateUrl: 'messageFilter/messageFilter.html',
+                controller: 'messageFilterController',
+                controllerAs: 'vm'
+            })
+            .when('/screensHistoryFilter', {
+                templateUrl: 'screensHistoryFilter/screensHistoryFilter.html',
+                controller: 'screensHistoryFilterController',
+                controllerAs: 'vm'
             });
 
             //.otherwise({redirectTo: '/'});
