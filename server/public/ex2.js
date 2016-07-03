@@ -75,13 +75,12 @@
 				}
 			});
 		});
-		
-		server.on('dataChanged', function() {
-			server.emit('getUpdatedData');
-		});
 
 		// get initial data
 		server.on('screensData', function(data) {
+			$("#texts").empty();
+			$("#pics").empty();
+			$("#result").empty();
 			IterateMesseges(data);
 		});
 

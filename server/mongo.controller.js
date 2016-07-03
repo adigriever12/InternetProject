@@ -27,7 +27,7 @@ var queryMongo = function (screenId, callback, fromDate, toDate, day, fromTime, 
     });
 };
 
-var updateMongo = function (newMesseage, callback) {
+var updateMongo = function (newMesseage, callback) { 
     MongoClient.connect(url, function (err, db) {
         if (err) {
             callback(false);
