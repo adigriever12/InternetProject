@@ -3,6 +3,8 @@
 	// explanation: in case the program will run for a very long time, the recursion calls will fill up the call stack.
 	// will happen fast in case there are no messages to answer current time frame, so no timeout will ocuur and call stack will explode.
 
+    var interval;
+
 	var IterateMesseges = function(ads) {
 		if (ads.length == 0) {
 			$("#texts").empty();
@@ -19,7 +21,7 @@
 
 			var currIndex = 0;
 
-			setInterval(function () {
+            interval = setInterval(function () {
 				replaceAds(ads[currIndex]);
 				currIndex = currIndex + 1 < ads.length ? currIndex + 1 : 0;
 			}, parseInt(ads[currIndex].length) * 1000); // in milisecond, wait until next call to function
@@ -81,6 +83,9 @@
 			$("#texts").empty();
 			$("#pics").empty();
 			$("#result").empty();
+            if (interval) {
+                clearInterval(interval);
+            }
 			IterateMesseges(data);
 		});
 

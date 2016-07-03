@@ -7,7 +7,7 @@ var express = require('express'),
     server = http.createServer(app),
     io = require('socket.io').listen(server),
     mongo = require('./mongo.controller.js'),
-    //clientCommunication = require("./clientCommunication"),
+//clientCommunication = require("./clientCommunication"),
     mongoRoutes = require("./mongo.routes"),
     Q = require("q");
 
@@ -23,10 +23,10 @@ app.use("/", mongoRoutes);
 
 var clients = [];
 
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
     socket.emit('connected');
-    socket.on('getData', function(data) {
-        clients.push({socket:socket, location:data.location, screenId:data.screenId});
+    socket.on('getData', function (data) {
+        clients.push({socket: socket, location: data.location, screenId: data.screenId});
         updateScreensHistory(data.screenId, data.location, data.city);
         console.log(socket.id + ' is connected');
         mongo.queryMongo(Number(data.screenId), function (docs) {
@@ -34,7 +34,7 @@ io.on('connection', function(socket) {
         });
     });
 
-    socket.on('getUpdatedData', function(socketScreenId) {
+    socket.on('getUpdatedData', function (socketScreenId) {
         mongo.queryMongo(Number(socketScreenId), function (docs) {
             socket.emit('screensData', docs);
         });
@@ -44,7 +44,7 @@ io.on('connection', function(socket) {
         console.log(socket.id + ' is disconnected');
 
         // Delete socket from connected clients
-        clients = clients.filter( function(item) {
+        clients = clients.filter(function (item) {
             return (item.socket.id != socket.id);
         });
     });
@@ -68,6 +68,8 @@ app.get('/getConnectedScreens', function (request, response) {
     response.status(200);
     response.json(clients.length);
 });
+
+
 
 // Messages
 app.post('/insertNewMessage', function (request, response) {
@@ -98,7 +100,6 @@ app.post('/updateMessage', function (request, response) {
 
     mongo.updateMessage(message, function (result) {
         updateClients();
-
         response.status(200);
         response.json(result);
     });
@@ -109,44 +110,43 @@ app.post('/deleteMessageById', function (request, response) {
     var id = request.body.id;
 
     mongo.deleteMessageById(id, function (res) {
-        clients.forEach(function (currClient) {
-            mongo.queryMongo(currClient.screenId, function (docs) {
-                currClient.socket.emit('screensData', docs);
-            });
-        });
-
-        response.status(200);
-        response.json(res);
-    });
-});
-
-// Screens
-app.get('/deleteScreen', function(request, response) {
-    var screenId = Number(request.query.id);
-
-    mongo.deleteScreen(screenId, function(res) {
         updateClients();
         response.status(200);
         response.json(res);
     });
 });
-var updateClients = function(){
 
-};
-
-var queryMongoDB = function(id, client) {
-
-};
-
-var updateClientsForScreen = function(screenId){
+var updateClients = function () {
     clients.forEach(function (currClient) {
-        if (screenId == currClient.screenId) {
-            mongo.queryMongo(currClient.screenId, function (docs) {
-                currClient.socket.emit('screensData', docs);
-            });
+        mongo.queryMongo(currClient.screenId, function (docs) {
+            currClient.socket.emit('screensData', docs);
+        });
+    });
+};
+
+
+
+// Screens
+app.get('/deleteScreen', function (request, response) {
+    var screenId = Number(request.query.id);
+
+    mongo.deleteScreen(screenId, function (res) {
+        updateClientsForScreen(screenId);
+        response.status(200);
+        response.json(res);
+    });
+});
+
+var updateClientsForScreen = function (screenId) {
+    clients.forEach(function (currClient) {
+        if (screenId == Number(currClient.screenId)) {
+            currClient.socket.emit('screensData', []);
         }
     });
 };
+
+
+
 var multer = require('multer');
 
 var storage = multer.diskStorage({ //multers disk storage settings
@@ -160,9 +160,9 @@ var storage = multer.diskStorage({ //multers disk storage settings
 
 var upload = multer({storage: storage});
 
-app.post('/upload', upload.single('file'), function(req, response) {
+app.post('/upload', upload.single('file'), function (req, response) {
 
-    mongo.insertNewUrl(req.file.filename, function(res) {
+    mongo.insertNewUrl(req.file.filename, function (res) {
         response.status(200);
         response.json(res);
     });
