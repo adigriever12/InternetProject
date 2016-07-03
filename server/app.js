@@ -118,7 +118,7 @@ app.post('/deleteMessageById', function (request, response) {
 
 var updateClients = function () {
     clients.forEach(function (currClient) {
-        mongo.queryMongo(currClient.screenId, function (docs) {
+        mongo.queryMongo(Number(currClient.screenId), function (docs) {
             currClient.socket.emit('screensData', docs);
         });
     });

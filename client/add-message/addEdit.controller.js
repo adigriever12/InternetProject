@@ -42,7 +42,11 @@
         } else {
             vm.message.texts = [{id: 0, value: ""}];
             vm.message.pictures = [];
-            vm.message.timeFrame = [{fromDate: new Date(), toDate: new Date(),
+
+            var date = new Date();
+            date.setUTCHours(0, 0, 0, 0);
+
+            vm.message.timeFrame = [{fromDate: date, toDate: date,
                 fromTime: new Date(1970, 0, 1, 0, 0, 0),
                 toTime: new Date(1970, 0, 1, 0, 0, 0), days: []}];
         }
