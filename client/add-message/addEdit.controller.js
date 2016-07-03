@@ -4,8 +4,8 @@
     angular.module('addEdit')
         .controller('addEditController', addEditController);
 
-    addEditController.$inject = ['$routeParams', 'messagesService', 'addEditService'];
-    function addEditController($routeParams, messagesService, addEditService) {
+    addEditController.$inject = ['$scope', '$routeParams', 'messagesService', 'addEditService'];
+    function addEditController($scope, $routeParams, messagesService, addEditService) {
         var vm = this;
 
         vm.message = {};
@@ -79,6 +79,30 @@
 
         vm.clearSearchTerm = function () {
             vm.searchTerm = "";
+        };
+
+        vm.currentFile = [];
+
+        vm.deletePicture = function(picture) {
+            var index = vm.message.pictures.indexOf(picture);
+            vm.message.pictures.splice(index, 1);
+        };
+
+        vm.fileChanged = function(picture, files) {
+            if (files.length > 0) {
+                $scope.$apply(function () {
+                    if (files[0].type.indexOf("image") == -1) {
+                        vm.imageError = "error"
+                    } else {
+                        vm.imageError = undefined;
+                        vm.currentFile.push({id: picture.id, value: files[0]});
+                    }
+                });
+            }
+        };
+
+        vm.fileInput = function(picture) {
+            
         };
 
         vm.save = function () {

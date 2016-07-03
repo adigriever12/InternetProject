@@ -123,6 +123,14 @@ app.post('/updateMessage', function (request, response) {
 
 app.post('/insertNewMessage', function (request, response) {
     var message = request.body.message;
+
+    // fix dates from string to date objects
+    message.timeFrame.forEach(function (curr, index) {
+        message.timeFrame[index].fromDate = new Date(message.timeFrame[index].fromDate);
+        message.timeFrame[index].toDate = new Date(message.timeFrame[index].toDate);
+    });
+
+    
     mongo.updateMongo(message, function (res) {
         response.status(200);
         response.json(res);
