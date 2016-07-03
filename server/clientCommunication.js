@@ -47,4 +47,6 @@ app.get('/getConnectedScreens', function (request, response) {
     response.json(clients.length);
 });
 
-module.exports = app;
+module.exports.listen = function(app) {
+    io = require('socket.io').listen(app);
+};

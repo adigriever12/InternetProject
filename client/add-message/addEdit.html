@@ -32,7 +32,7 @@
             <!--<ng-form name="innerPictureForm">-->
 
             <img ng-cloak class="picture" ng-show="picture.value && picture.value != ''" ng-src="http://localhost:8080/{{picture.value}}">
-            <input ng-required="vm.message.texts.length <= 1 || vm.message.texts.length >= 10" name="picture_name" ng-if="!picture.value || picture.value == ''" type="file" ng-model="picture.value">
+            <input name="picture_name" ng-if="!picture.value || picture.value == ''" type="file" ng-model="picture.value">
 
             <button class="remove" ng-click="vm.delete(picture, vm.message.pictures)">X</button>
                     <!--<span>{{innerPictureForm.picture_name.$valid}}</span>-->

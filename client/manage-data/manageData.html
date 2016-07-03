@@ -20,9 +20,9 @@
             <button id="upload" ng-disabled="!vm.currentFile || vm.currentFile == 'notHtml'"
                     ng-click="uploadFile(vm.currentFile)" class="add glyphicon glyphicon-upload">
             </button>
-            <span ng-show="vm.currentFile == 'notHtml'" class="error" ng-cloak>template file must be of type html</span>
-            <span ng-show="vm.response == 'success'" ng-cloak class="success">Upload succeeded</span>
-            <span ng-show="vm.response == 'failed'" ng-cloak class="error">Upload failed</span>
+            <i ng-show="vm.currentFile == 'notHtml'" class="error" ng-cloak>template file must be of type html</i>
+            <i ng-show="vm.response == 'success'" ng-cloak class="success">Upload succeeded</i>
+            <i ng-show="vm.response == 'failed'" ng-cloak class="error">Upload failed</i>
         </div>
         <ul id="urls">
             <li ng-repeat="url in vm.urls">
