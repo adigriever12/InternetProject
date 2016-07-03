@@ -14,10 +14,10 @@
                     scope.$apply(function () {
                         //scope.fileread(changeEvent.target.files[0]);
                         // or all selected files:
-                        scope.fileread = changeEvent.target.files[0];
+                        scope.$parent.picture.value = changeEvent.target.files[0];
                     });
                 });
-            },
+            }
             //controller: 'fileInputController',
             //controllerAs: 'vm'
         }

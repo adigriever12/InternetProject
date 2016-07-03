@@ -32,7 +32,7 @@
             <!--<ng-form name="innerPictureForm">-->
 
             <img ng-cloak class="picture" ng-show="picture.value && picture.value != ''" ng-src="http://localhost:8080/{{picture.value}}">
-            <input type="file" name="file" fileread="vm.fileInput"/><!--onchange="angular.element(this).scope().vm.fileChanged(this.files)"/>-->
+            <input type="file" name="file" file-input-view fileread="vm.fileInput"/><!--onchange="angular.element(this).scope().vm.fileChanged(this.files)"/>-->
 
             <i ng-required="!vm.imageError" ng-show="vm.imageError" ng-cloak>must be type image</i>
             <button class="remove" ng-click="vm.deletePicture(picture)">X</button>
@@ -98,7 +98,7 @@
         <ul class="time_frames">
             <li ng-repeat="frame in vm.message.timeFrame">
                 <div>
-                    <span>From date:</span><input type="date" ng-model="frame.fromDate" placeholder="frame.fromDate" required>
+                    <span>From date:</span><input type="date" ng-model="frame.fromDate"  placeholder="frame.fromDate | date : 'yyyy-MM-dd'" required>
                     <span>To date:</span><input type="date" ng-model="frame.toDate" required>
                     <i class="error" ng-show="!frame.fromDate || !frame.toDate">must fill message dates of screening</i>
                 </div>

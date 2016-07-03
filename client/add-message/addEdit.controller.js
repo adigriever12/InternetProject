@@ -42,7 +42,7 @@
         } else {
             vm.message.texts = [{id: 0, value: ""}];
             vm.message.pictures = [];
-            vm.message.timeFrame = [{fromDate: new Date(), toDate: new Date,
+            vm.message.timeFrame = [{fromDate: new Date(), toDate: new Date(),
                 fromTime: new Date(1970, 0, 1, 0, 0, 0),
                 toTime: new Date(1970, 0, 1, 0, 0, 0), days: []}];
         }
@@ -72,7 +72,7 @@
         };
 
         vm.addTimeFrame = function() {
-          vm.message.timeFrame.push({fromDate: new Date(), toDate: new Date,
+          vm.message.timeFrame.push({fromDate: new Date(), toDate: new Date(),
               fromTime: new Date(1970, 0, 1, 0, 0, 0),
               toTime: new Date(1970, 0, 1, 0, 0, 0), days: []});
         };
@@ -102,7 +102,7 @@
         };
 
         vm.fileInput = function(picture) {
-            
+
         };
 
         vm.save = function () {
@@ -116,8 +116,12 @@
                 var toTime = vm.message.timeFrame[index].toTime;
                 requestMessage.timeFrame[index].toTime = ("0" + toTime.getHours()).slice(-2) + ":" + ("0" + toTime.getMinutes()).slice(-2);
 
-                //requestMessage.timeFrame[index].fromDate = requestMessage.timeFrame[index].fromDate.toISOString();
-                //requestMessage.timeFrame[index].toDate = requestMessage.timeFrame[index].toDate.toISOString();
+                //requestMessage.timeFrame[index].fromDate.setHours(0, 0, 0, 0);// = requestMessage.timeFrame[index].fromDate.toISOString();
+                //requestMessage.timeFrame[index].toDate.setHours(0, 0, 0, 0);// = requestMessage.timeFrame[index].toDate.toISOString();
+                var fromDate = requestMessage.timeFrame[index].fromDate;
+                requestMessage.timeFrame[index].fromDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 0, 0, 0).toUTCString();
+                var toDate = requestMessage.timeFrame[index].toDate;
+                requestMessage.timeFrame[index].toDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 0, 0, 0).toUTCString();
             });
 
             requestMessage.pictures = requestMessage.pictures.map(function (curr) {

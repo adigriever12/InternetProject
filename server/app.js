@@ -8,7 +8,8 @@ var express = require('express'),
     io = require('socket.io').listen(server),
     mongo = require('./mongo.controller.js'),
     //clientCommunication = require("./clientCommunication"),
-    mongoRoutes = require("./mongo.routes");
+    mongoRoutes = require("./mongo.routes"),
+    Q = require("q");
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}));
