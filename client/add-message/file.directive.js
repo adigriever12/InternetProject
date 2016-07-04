@@ -1,4 +1,4 @@
-(function() {
+(function () {
     angular.module('fileInput', [])
         .directive('fileInputView', fileInputView)
         .controller('fileInputController', fileInputController);
@@ -14,7 +14,11 @@
                     scope.$apply(function () {
                         //scope.fileread(changeEvent.target.files[0]);
                         // or all selected files:
-                        scope.$parent.picture.value = changeEvent.target.files[0];
+                        if (changeEvent.target.files.length > 0 && changeEvent.target.files[0].type.indexOf("image") != -1) {
+                            scope.$parent.picture.file = changeEvent.target.files[0];
+                        } else {
+                            scope.$parent.picture.value = undefined;
+                        }
                     });
                 });
             }

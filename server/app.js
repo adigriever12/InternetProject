@@ -168,13 +168,39 @@ app.post('/upload', upload.single('file'), function (req, response) {
     });
 });
 
+var upload1 = multer({storage: storage}).array('files', 5);
 
-app.post('/multipleUploads', upload.array('photos', 12), function (req, response) {
 
-    mongo.insertNewUrl(req.file.filename, function (res) {
-        response.status(200);
-        response.json(res);
+app.post('/multipleUploads', function (req, res) {
+
+    upload1(req.body.files, res, function (err) {
+        if (err) {
+            // An error occurred when uploading
+            console.log(err);
+            return;
+        }
+
+        // Everything went fine
     });
+
+    //req.files.forEach(function(curr) {
+    //    //upload1(req, res)
+    //});
+    /*req.body.files.forEach(function(currFile) {
+        mongo.insertNewUrl(currFile.filename, function (res) {
+            response.status(200);
+            response.json(res);
+        });
+    });*/
+
+    /*upload1(req, res, function (err) {
+        if (err) {
+            console.log(error);
+            return;
+        }
+
+        var r = err;
+    })*/
 });
 
 server.listen(8080);

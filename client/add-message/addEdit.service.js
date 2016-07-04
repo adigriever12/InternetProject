@@ -31,9 +31,28 @@
             });
         }
 
+        function uploadMultipleUrlTemplates(fd) {
+            var url = 'http://localhost:8080/multipleUploads';
+
+            var data = {
+                files:   fd
+            };
+
+            return $http({method: "POST", url: url, data: data, headers: {'Content-Type': 'multipart/form-data'}}).then(function (response) {
+                return response.data;
+            });
+
+            /*return $http.post('http://localhost:8080/multipleUploads', {files: fd}, {
+                headers: {'Content-Type': undefined }
+            }).then(function(response) {
+                return response.data;
+            });*/
+        }
+
         return {
             updateMessage: updateMessage,
-            insertMessage: insertMessage
+            insertMessage: insertMessage,
+            uploadMultipleUrlTemplates: uploadMultipleUrlTemplates
         }
     }
 }());

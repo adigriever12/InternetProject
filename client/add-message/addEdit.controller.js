@@ -4,8 +4,8 @@
     angular.module('addEdit')
         .controller('addEditController', addEditController);
 
-    addEditController.$inject = ['$scope', '$routeParams', 'messagesService', 'addEditService'];
-    function addEditController($scope, $routeParams, messagesService, addEditService) {
+    addEditController.$inject = ['$scope', '$routeParams', 'messagesService', 'addEditService', 'manageDataService'];
+    function addEditController($scope, $routeParams, messagesService, addEditService, manageDataService) {
         var vm = this;
 
         vm.message = {};
@@ -18,7 +18,7 @@
                     return {id: index, value: curr};
                 });
                 vm.message.pictures = response.pictures.map(function (curr, index) {
-                    return {id: index, value: curr};
+                    return {src: curr};
                 });
                 //vm.message.url = response.url;//vm.selectedUrl
                 vm.selectedUrl = response.url;
@@ -80,6 +80,10 @@
             }
         };
 
+        vm.addPicture = function() {
+            vm.message.pictures.push({});
+        };
+
         vm.addTimeFrame = function () {
             var date = new Date();
             date.setUTCHours(0);
@@ -97,27 +101,29 @@
             vm.searchTerm = "";
         };
 
-        vm.currentFile = [];
-
         vm.deletePicture = function (picture) {
             var index = vm.message.pictures.indexOf(picture);
             vm.message.pictures.splice(index, 1);
         };
 
-        vm.fileChanged = function (picture, files) {
-            if (files.length > 0) {
-                $scope.$apply(function () {
-                    if (files[0].type.indexOf("image") == -1) {
-                        vm.imageError = "error"
-                    } else {
-                        vm.imageError = undefined;
-                        vm.currentFile.push({id: picture.id, value: files[0]});
-                    }
-                });
-            }
-        };
-
         vm.save = function () {
+
+            // uploading pics to server
+            vm.message.pictures.forEach(function(currPic) {
+                if (currPic.file) {
+                    var fd = new FormData();
+                    //Take the first selected file
+                    fd.append("file", currPic.file);
+
+                    manageDataService.uploadUrlTemplate(fd).then(function (response) {
+                        //vm.response = 'success';
+                        if (!response) {
+                            alert("failed to load images");
+                        }
+                    });
+                }
+            });
+
             var requestMessage = {};
             angular.copy(vm.message, requestMessage);
 
@@ -127,17 +133,22 @@
 
                 var toTime = vm.message.timeFrame[index].toTime;
                 requestMessage.timeFrame[index].toTime = ("0" + toTime.getHours()).slice(-2) + ":" + ("0" + toTime.getMinutes()).slice(-2);
-
-                //requestMessage.timeFrame[index].fromDate.setHours(0, 0, 0, 0);// = requestMessage.timeFrame[index].fromDate.toISOString();
-                //requestMessage.timeFrame[index].toDate.setHours(0, 0, 0, 0);// = requestMessage.timeFrame[index].toDate.toISOString();
-                //var fromDate = requestMessage.timeFrame[index].fromDate;
-                //requestMessage.timeFrame[index].fromDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 0, 0, 0).toUTCString();
-                //var toDate = requestMessage.timeFrame[index].toDate;
-                //requestMessage.timeFrame[index].toDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 0, 0, 0).toUTCString();
             });
 
-            requestMessage.pictures = requestMessage.pictures.map(function (curr) {
-                return curr.value
+            /*requestMessage.pictures = requestMessage.pictures.filter(function (curr) {
+                if (curr.src) {
+                    return true;
+                } else if (curr.file) {
+                    return true;
+                }
+            });*/
+
+            requestMessage.pictures = vm.message.pictures.map(function(curr) {
+                if (curr.src) {
+                    return curr.src;
+                } else {
+                    return curr.file.name;
+                }
             });
 
             requestMessage.texts = requestMessage.texts.map(function (curr) {

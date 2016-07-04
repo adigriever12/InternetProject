@@ -24,17 +24,18 @@
 
     <div class="field">
         <div class="add_fields">
-            <span class="field_names">Pictures:</span><button class="add" ng-click="vm.add(vm.message.pictures)" ng-disabled="vm.message.pictures.length >= 5">+</button>
+            <span class="field_names">Pictures:</span>
+            <button class="add" ng-click="vm.addPicture()" ng-disabled="vm.message.pictures.length >= 5">+</button>
             <span ng-if="vm.message.pictures.length >= 5" ng-cloak>maximum of 5 pictures</span>
         </div>
 
         <div ng-repeat="picture in vm.message.pictures track by $index" class="multiple-items">
             <!--<ng-form name="innerPictureForm">-->
 
-            <img ng-cloak class="picture" ng-show="picture.value && picture.value != ''" ng-src="http://localhost:8080/{{picture.value}}">
-            <input type="file" name="file" file-input-view fileread="vm.fileInput"/><!--onchange="angular.element(this).scope().vm.fileChanged(this.files)"/>-->
-
-            <i ng-required="!vm.imageError" ng-show="vm.imageError" ng-cloak>must be type image</i>
+            <img ng-cloak class="picture" ng-show="picture.src && picture.src != ''" ng-src="http://localhost:8080/{{picture.src}}">
+            <input ng-if="!picture.src || picture.src == ''" type="file" name="file" file-input-view fileread="vm.fileInput"/>
+            <i ng-show="!picture.value && !picture.src" class="error">must be of type image</i>
+            <!--<i ng-required="!vm.imageError" ng-show="vm.imageError" ng-cloak>must be type image</i>-->
             <button class="remove" ng-click="vm.deletePicture(picture)">X</button>
                     <!--<span>{{innerPictureForm.picture_name.$valid}}</span>-->
 
@@ -69,7 +70,7 @@
 
     <div class="field">
         <span class="field_names">Price (in $):</span>
-        <input type="number" name="price" placeholder="Decimal" ng-model="vm.message.price" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" required>
+        <input type="number" name="price" placeholder="Decimal" min="0" ng-model="vm.message.price" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" required>
         <i class="error" ng-show="editAdd.price.$error.required" ng-cloak>price is required</i>
         <i class="error" ng-show="editAdd.price.$error.number" ng-cloak>Not valid number!</i>
     </div>
