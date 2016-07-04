@@ -65,7 +65,7 @@
                         for(var i in vm.pricaRange) {
                             var val = {};
 
-                            val.key = vm.pricaRange[i].key + ' (' + vm.pricaRange[i].value.count + ')';
+                            val.key = vm.pricaRange[i].key + ' (Total : ' + vm.pricaRange[i].value.count + ')';
                             val.value = {
                                 $lte: vm.pricaRange[i].value.$lte,
                                 $gte: vm.pricaRange[i].value.$gte
