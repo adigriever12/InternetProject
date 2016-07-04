@@ -9,7 +9,8 @@ var express = require('express'),
     mongo = require('./mongo.controller.js'),
 //clientCommunication = require("./clientCommunication"),
     mongoRoutes = require("./mongo.routes"),
-    Q = require("q");
+    Q = require("q"),
+    multer = require('multer');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}));
@@ -70,7 +71,6 @@ app.get('/getConnectedScreens', function (request, response) {
 });
 
 
-
 // Messages
 app.post('/insertNewMessage', function (request, response) {
     var message = request.body.message;
@@ -80,7 +80,6 @@ app.post('/insertNewMessage', function (request, response) {
         message.timeFrame[index].fromDate = new Date(message.timeFrame[index].fromDate);
         message.timeFrame[index].toDate = new Date(message.timeFrame[index].toDate);
     });
-
 
     mongo.updateMongo(message, function (res) {
         updateClients();
@@ -125,7 +124,6 @@ var updateClients = function () {
 };
 
 
-
 // Screens
 app.get('/deleteScreen', function (request, response) {
     var screenId = Number(request.query.id);
@@ -146,8 +144,7 @@ var updateClientsForScreen = function (screenId) {
 };
 
 
-
-var multer = require('multer');
+// UPLOAD FILES
 
 var storage = multer.diskStorage({ //multers disk storage settings
     destination: function (req, file, cb) {
@@ -161,7 +158,7 @@ var storage = multer.diskStorage({ //multers disk storage settings
 var upload = multer({storage: storage});
 
 app.post('/upload', upload.single('file'), function (req, response) {
-
+    // insert new urls to DB
     mongo.insertNewUrl(req.file.filename, function (res) {
         response.status(200);
         response.json(res);
@@ -169,47 +166,9 @@ app.post('/upload', upload.single('file'), function (req, response) {
 });
 
 app.post('/uploadPics', upload.single('file'), function (req, response) {
-
-    //mongo.insertNewUrl(req.file.filename, function (res) {
-        response.status(200);
+    response.status(200);
     var isTrue = req != undefined;
-        response.json(isTrue);
-    //});
-});
-
-var upload1 = multer({storage: storage}).array('files', 5);
-
-
-app.post('/multipleUploads', function (req, res) {
-
-    upload1(req.body.files, res, function (err) {
-        if (err) {
-            // An error occurred when uploading
-            console.log(err);
-            return;
-        }
-
-        // Everything went fine
-    });
-
-    //req.files.forEach(function(curr) {
-    //    //upload1(req, res)
-    //});
-    /*req.body.files.forEach(function(currFile) {
-        mongo.insertNewUrl(currFile.filename, function (res) {
-            response.status(200);
-            response.json(res);
-        });
-    });*/
-
-    /*upload1(req, res, function (err) {
-        if (err) {
-            console.log(error);
-            return;
-        }
-
-        var r = err;
-    })*/
+    response.json(isTrue);
 });
 
 server.listen(8080);

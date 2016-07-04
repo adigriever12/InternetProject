@@ -1,11 +1,15 @@
 <div>
     <div id="header">
         <span>Filter by name:<input ng-model="filterName"></span>
-        <span>Filter by screen:<input ng-model="filterScreen"></span>
+        <span>Filter by screen:
+            <select ng-model="vm.selectedScreen" ng-options="screen for screen in vm.screens">
+                    <option></option>
+                </select></span>
         <span>Filter by Text:<input ng-model="filterText"></span>
     </div>
     <ul id="messages-list">
-        <li class="message" ng-repeat="message in vm.messages | filter:{name:filterName} | filter:{frames:filterScreen} | filter:{texts:filterText}">
+        <li class="message"
+            ng-repeat="message in vm.messages | filter:{name:filterName} | filter: vm.screenFilter | filter:{texts:filterText}">
             <div>
                 <span>Name: {{message.name}}</span>
                 <button ng-click="vm.edit(message)">Edit</button>

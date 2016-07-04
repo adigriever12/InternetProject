@@ -5,7 +5,7 @@ start cmd /k mongod.exe --dbpath mongodb\data
 
 timeout 5
 @echo *** Start node server ***
-start cmd /k node server\server.js
+start cmd /k node server\app.js
 
 timeout 5
 start chrome.exe "http://localhost:8080/screen=3"

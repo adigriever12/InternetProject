@@ -66,7 +66,7 @@
             var pie = new d3pie("pie", {
                 header: {
                     title: {
-                        text: "messages"
+                        text: "messages per week-day"
                     },
                     location: "pie-center"
                 },

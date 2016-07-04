@@ -41,7 +41,7 @@
 
 		// set pictures
 		for (var i = 0; i < ad.pictures.length; i++) {
-			$("#pics").append('<img src="' + ad.pictures[i] +'" style="height: 50px; width: 50px;">');
+			$("#pics").append('<img src="' + ad.pictures[i] +'" >');
 		}
 	};
 
