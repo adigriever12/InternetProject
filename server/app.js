@@ -168,6 +168,15 @@ app.post('/upload', upload.single('file'), function (req, response) {
     });
 });
 
+app.post('/uploadPics', upload.single('file'), function (req, response) {
+
+    //mongo.insertNewUrl(req.file.filename, function (res) {
+        response.status(200);
+    var isTrue = req != undefined;
+        response.json(isTrue);
+    //});
+});
+
 var upload1 = multer({storage: storage}).array('files', 5);
 
 

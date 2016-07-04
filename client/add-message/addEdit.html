@@ -34,7 +34,7 @@
 
             <img ng-cloak class="picture" ng-show="picture.src && picture.src != ''" ng-src="http://localhost:8080/{{picture.src}}">
             <input ng-if="!picture.src || picture.src == ''" type="file" name="file" file-input-view fileread="vm.fileInput"/>
-            <i ng-show="!picture.value && !picture.src" class="error">must be of type image</i>
+            <i ng-show="picture.value == 'error' && !picture.src" class="error">must be of type image</i>
             <!--<i ng-required="!vm.imageError" ng-show="vm.imageError" ng-cloak>must be type image</i>-->
             <button class="remove" ng-click="vm.deletePicture(picture)">X</button>
                     <!--<span>{{innerPictureForm.picture_name.$valid}}</span>-->

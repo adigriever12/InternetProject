@@ -81,7 +81,7 @@
         };
 
         vm.addPicture = function() {
-            vm.message.pictures.push({});
+            vm.message.pictures.push({value: ""});
         };
 
         vm.addTimeFrame = function () {
@@ -115,7 +115,7 @@
                     //Take the first selected file
                     fd.append("file", currPic.file);
 
-                    manageDataService.uploadUrlTemplate(fd).then(function (response) {
+                    addEditService.uploadUrlTemplate(fd).then(function (response) {
                         //vm.response = 'success';
                         if (!response) {
                             alert("failed to load images");

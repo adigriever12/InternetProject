@@ -17,7 +17,7 @@
                         if (changeEvent.target.files.length > 0 && changeEvent.target.files[0].type.indexOf("image") != -1) {
                             scope.$parent.picture.file = changeEvent.target.files[0];
                         } else {
-                            scope.$parent.picture.value = undefined;
+                            scope.$parent.picture.value = "error";
                         }
                     });
                 });
