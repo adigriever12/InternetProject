@@ -42,23 +42,6 @@
             }
         };
 
-        vm.addUrl = function () {
-            if (vm.newUrl) {
-                if (vm.urls.indexOf(vm.newUrl) > -1) {
-                    alert("template already exists");
-                } else {
-                    manageDataService.addUrl(vm.newUrl).then(function (result) {
-                        if (result) {
-                            vm.urls.push(vm.newUrl);
-                            alert('insertion succeeded');
-                        } else {
-                            alert('insertion failed');
-                        }
-                    });
-                }
-            }
-        };
-
         vm.deleteUrl = function (urlId) {
             manageDataService.deleteUrl(urlId).then(function (result) {
                 if (result) {

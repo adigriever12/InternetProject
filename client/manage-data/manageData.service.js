@@ -4,11 +4,11 @@
     angular.module('manageData')
         .service('manageDataService', manageDataService);
 
-    manageDataService.$inject = ['$http'];
-    function manageDataService($http) {
+    manageDataService.$inject = ['$http', 'SERVER'];
+    function manageDataService($http, SERVER) {
 
         function addScreen(screenId) {
-            var url = 'http://localhost:8080/insertNewScreen';
+            var url = SERVER + 'insertNewScreen';
 
             return $http({method: "GET", url: url, params: {id: screenId}}).then(function (response) {
                 return response.data;
@@ -16,7 +16,7 @@
         }
 
         function deleteScreen(screenId) {
-            var url = 'http://localhost:8080/deleteScreen';
+            var url = SERVER + 'deleteScreen';
 
             return $http({method: "GET", url: url, params: {id: screenId}}).then(function (response) {
                 return response.data;
@@ -24,7 +24,7 @@
         }
 
         function addUrl(urlId) {
-            var url = 'http://localhost:8080/insertNewUrl';
+            var url = SERVER + 'insertNewUrl';
 
             return $http({method: "GET", url: url, params: {id: urlId}}).then(function (response) {
                 return response.data;
@@ -32,7 +32,7 @@
         }
 
         function deleteUrl(urlId) {
-            var url = 'http://localhost:8080/deleteUrl';
+            var url = SERVER + 'deleteUrl';
 
             return $http({method: "GET", url: url, params: {id: urlId}}).then(function (response) {
                 return response.data;
@@ -40,7 +40,7 @@
         }
 
         function uploadUrlTemplate(fd) {
-            return $http.post('http://localhost:8080/upload', fd, {
+            return $http.post(SERVER + 'upload', fd, {
                 headers: {'Content-Type': undefined }
             }).then(function(response) {
                 return response.data;

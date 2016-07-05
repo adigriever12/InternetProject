@@ -4,16 +4,16 @@
     angular.module('messageFilter')
         .service('messageFilterService', messageFilterService);
 
-    messageFilterService.$inject = ['$http'];
-    function messageFilterService($http) {
+    messageFilterService.$inject = ['$http', 'SERVER'];
+    function messageFilterService($http, SERVER) {
 
         function getFilterValues(filter) {
-            return $http.get('http://localhost:8080/getFilterValues=' + filter).then(function(response) {
+            return $http.get(SERVER + 'getFilterValues=' + filter).then(function(response) {
                 return response.data;
             });
         }
         function getAllMessages() {
-            return $http.get('http://localhost:8080/getAllMessages').then(function(response) {
+            return $http.get(SERVER + 'getAllMessages').then(function(response) {
                 return response.data;
             });
         }
@@ -36,7 +36,7 @@
                 getAllMessages();
                 return;
             }
-            var url = 'http://localhost:8080/filteredMessages';
+            var url = SERVER + 'filteredMessages';
 
             var data = {
                 find: find
@@ -47,7 +47,7 @@
             });
         }
         function deleteMessage(id) {
-            var url = 'http://localhost:8080/deleteMessageById';
+            var url = SERVER + 'deleteMessageById';
 
             return $http({method: "POST", url: url, data: {id: id}}).then(function(response) {
                 return response.data;

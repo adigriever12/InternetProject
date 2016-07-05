@@ -4,12 +4,12 @@
     angular.module('screensHistoryFilter')
         .service('screensHistoryFilterService', screensHistoryFilterService);
 
-    screensHistoryFilterService.$inject = ['$http'];
-    function screensHistoryFilterService($http) {
+    screensHistoryFilterService.$inject = ['$http', 'SERVER'];
+    function screensHistoryFilterService($http, SERVER) {
 
         function getFilterValues(group) {
 
-            var url = 'http://localhost:8080/historyFilterValuesGet';
+            var url = SERVER + 'historyFilterValuesGet';
 
             var data = {
                 group: group
@@ -39,7 +39,7 @@
                 }
             }
             
-            var url = 'http://localhost:8080/filteredData';
+            var url = SERVER + 'filteredData';
 
             var data = {
                 find: find

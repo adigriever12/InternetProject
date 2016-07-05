@@ -4,8 +4,8 @@
     angular.module('liveScreen')
         .controller('liveScreenController', liveScreenController);
 
-    liveScreenController.$inject = ['messagesService', '$sce'];
-    function liveScreenController(messagesService, $sce) {
+    liveScreenController.$inject = ['messagesService', '$sce', 'SERVER'];
+    function liveScreenController(messagesService, $sce, SERVER) {
         var vm = this;
 
         var now = new Date();
@@ -39,7 +39,7 @@
             messagesService.getScreenId(params).then(function(response) {
                 if (response.length > 0) {
                     vm.frames = response.map(function(curr) {
-                        return {url: $sce.trustAsResourceUrl("http://localhost:8080/screen=" + curr),
+                        return {url: $sce.trustAsResourceUrl(SERVER + "screen=" + curr),
                                 id: curr};
                     });
 

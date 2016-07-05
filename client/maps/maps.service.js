@@ -4,11 +4,11 @@
     angular.module('maps')
         .service('mapsService', mapsService);
 
-    mapsService.$inject = ['$http'];
-    function mapsService($http) {
+    mapsService.$inject = ['$http', 'SERVER'];
+    function mapsService($http, SERVER) {
 
         function getLocations() {
-            return $http.get('http://localhost:8080/getLocations').then(function(response) {
+            return $http.get(SERVER + 'getLocations').then(function(response) {
                 return response.data;
             });
         }

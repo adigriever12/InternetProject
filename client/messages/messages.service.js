@@ -4,11 +4,11 @@
     angular.module('messages')
         .service('messagesService', messagesService);
 
-    messagesService.$inject = ['$http'];
-    function messagesService($http) {
+    messagesService.$inject = ['$http', 'SERVER'];
+    function messagesService($http, SERVER) {
 
         function getAllMessages() {
-            var url = 'http://localhost:8080/getAllMessages';
+            var url = SERVER + 'getAllMessages';
 
             return $http.get(url).then(function(response) {
                 return response.data;
@@ -16,7 +16,7 @@
         }
 
         function deleteMessage(id) {
-            var url = 'http://localhost:8080/deleteMessageById';
+            var url = SERVER + 'deleteMessageById';
 
             return $http({method: "POST", url: url, data: {id: id}}).then(function(response) {
                 return response.data;
@@ -24,7 +24,7 @@
         }
 
         function getMessage(id) {
-            var url = 'http://localhost:8080/getMessageById';
+            var url = SERVER + 'getMessageById';
 
             return $http({method: "GET", url: url, params: {id: id}}).then(function(response) {
                 if (response.data.length = 1) {
@@ -34,7 +34,7 @@
         }
         
         function getAllURls() {
-            var url = 'http://localhost:8080/getAllUrlTemplates';
+            var url = SERVER + 'getAllUrlTemplates';
 
             return $http.get(url).then(function(response) {
                 return response.data;
@@ -42,13 +42,13 @@
         }
 
         function getAllScreens() {
-            return $http.get('http://localhost:8080/getAllScreensIds').then(function(response) {
+            return $http.get(SERVER + 'getAllScreensIds').then(function(response) {
                 return response.data;
             });
         }
 
         function getScreenId(params) {
-            var url = 'http://localhost:8080/getScreensIdsByConditions';
+            var url = SERVER + 'getScreensIdsByConditions';
 
             return $http({method: "POST", url: url, data: params}).then(function(response) {
 

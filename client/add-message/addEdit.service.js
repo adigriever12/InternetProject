@@ -4,11 +4,11 @@
     angular.module('addEdit')
         .service('addEditService', addEditService);
 
-    addEditService.$inject = ['$http'];
-    function addEditService($http) {
+    addEditService.$inject = ['$http', 'SERVER'];
+    function addEditService($http, SERVER) {
 
         function updateMessage(message) {
-            var url = 'http://localhost:8080/updateMessage';
+            var url = SERVER + 'updateMessage';
 
             var data = {
               message:   message
@@ -20,7 +20,7 @@
         }
 
         function insertMessage(message) {
-            var url = 'http://localhost:8080/insertNewMessage';
+            var url = SERVER + 'insertNewMessage';
 
             var data = {
                 message:   message
@@ -32,7 +32,7 @@
         }
 
         function uploadUrlTemplate(fd) {
-            return $http.post('http://localhost:8080/uploadPics', fd, {
+            return $http.post(SERVER + 'uploadPics', fd, {
                 headers: {'Content-Type': undefined }
             }).then(function(response) {
                 return response.data;
