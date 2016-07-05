@@ -1,7 +1,6 @@
 (function () {
     angular.module('fileInput', [])
         .directive('fileInputView', fileInputView)
-        .controller('fileInputController', fileInputController);
 
     fileInputView.$inject = [];
     function fileInputView() {
@@ -22,16 +21,6 @@
                     });
                 });
             }
-            //controller: 'fileInputController',
-            //controllerAs: 'vm'
         }
-    }
-
-
-    fileInputController.$inject = [];
-    function fileInputController() {
-        var vm = this;
-
-
     }
 }());
