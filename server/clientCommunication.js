@@ -7,40 +7,10 @@ var express = require('express'),
 
 var clients = [];
 
-/*io.on('connection', function (socket) {
-    socket.emit('connected');
-    socket.on('getData', function (data) {
-        clients.push({socket: socket, location: data.location, screenId: data.screenId});
-        updateScreensHistory(data.screenId, data.location, data.city);
-        console.log(socket.id + ' is connected');
-        mongo.queryMongo(Number(data.screenId), function (docs) {
-            socket.emit('screensData', docs);
-        });
-    });
-
-    socket.on('getUpdatedData', function (socketScreenId) {
-        mongo.queryMongo(Number(socketScreenId), function (docs) {
-            socket.emit('screensData', docs);
-        });
-    });
-
-    socket.on('disconnect', function () {
-        console.log(socket.id + ' is disconnected');
-
-        // Delete socket from connected clients
-        clients = clients.filter(function (item) {
-            return (item.socket.id != socket.id);
-        });
-    });
-});*/
-
-
-
 app.get('/getConnectedScreens', function (request, response) {
     response.status(200);
     response.json(clients.length);
 });
-
 
 // Messages
 app.post('/insertNewMessage', function (request, response) {
