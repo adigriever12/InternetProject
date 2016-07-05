@@ -109,8 +109,10 @@
                     if (response) {
                         vm.messages = vm.messages.filter(function(curr) {
                             if (curr._id != message._id) {
-                                return;
+                                return true;
                             }
+
+                            return false;
                         });
                     } else {
                         alert('delete failed');
